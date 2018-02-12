@@ -1,0 +1,54 @@
+---
+title: "TP1 - Data Mining"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+# Part one
+
+### Question a)
+
+```{r}
+
+set.seed(0)
+
+# creation of the vector
+v = rnorm(6000*201, mean=0, sd=1)
+
+# creation of the matrix 6000 lines and 201 columns
+mat = matrix(data = v, nrow = 6000, ncol = 201)
+
+# turn the matrix into a data frame
+dataFrame = data.frame(mat)
+
+# creation of the linear model
+reg = lm(formula = X1 ~ . , data = dataFrame)
+
+summary(reg)
+
+```
+
+### Question b)
+
+We assume that $y$ and $\forall i$, $\mu_i$ is a vector of size $6000$.
+
+\begin{bmatrix}
+y & \mu_1 & \mu_2 & \cdots & \mu_{200} \\
+\end{bmatrix}
+
+The associated equation is :
+
+$y = \displaystyle \sum_{k=1}^{200} \beta_k \mu_k + \epsilon$
+
+### Question c)
+
+summary(reg)$coefficients
+
+
+
+
+# Part two
+
+
+
