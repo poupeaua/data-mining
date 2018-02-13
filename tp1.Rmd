@@ -25,7 +25,8 @@ dataFrame = data.frame(mat)
 # creation of the linear model
 reg = lm(formula = X1 ~ . , data = dataFrame)
 
-summary(reg)
+# uncomment that following part to see the summary of the regression
+# summary(reg)
 
 ```
 
@@ -41,12 +42,26 @@ The associated equation is :
 
 $y = \displaystyle \sum_{k=1}^{200} \beta_k \mu_k + \epsilon$
 
+We expect that all $\beta_k$ are equals to $0$ because there is no correlation between vectors. We expect that $\epsilon$ is the only thing different than $0$, so $\epsilon$ is equal to $y$.
+
+![](./brief_summary_1.png)
+
 ### Question c)
 
-summary(reg)$coefficients
+```{r}
 
+# stock in the vector coef all the p-values
+coef <- summary(reg)$coefficients[, 4]
 
+# here we select the p-values assessed as significantly non-zero at level 5%
+coef[coef < 0.05]
 
+# count the number of those selected coefficients
+length(coef[coef < 0.05])
+
+```
+
+This result is not expected at all since we computed random independant variables from the classic Gaussian model $\mathcal{N}(0, 1)$. All the $\beta_k$ should be equals to zero, however this is not the case because as there is many data, the linear model find some correlation between vectors that do not really exists.
 
 # Part two
 
