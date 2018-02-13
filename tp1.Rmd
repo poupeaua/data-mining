@@ -65,5 +65,74 @@ This result is not expected at all since we computed random independant variable
 
 # Part two
 
+### Question a)
+
+```{r}
+
+set.seed(3)
+
+# creation of three vectors
+eps_1 <- rnorm(1000)
+eps_2 <- rnorm(1000)
+eps_3 <- rnorm(1000)
+
+# creation of the model
+X_1 = eps_1
+X_2 = 3*X_1 + eps_2
+Y = 2 + X_1 + X_2 + eps_3
+
+# plot the cloud of points (X_1,X_2)
+plot(X_1, X_2)
+
+
+# creation of three new vectors
+eps_1 <- rnorm(10)
+eps_2 <- rnorm(10)
+eps_3 <- rnorm(10)
+
+# creation of the new model
+X_1 = eps_1
+X_2 = 3*X_1 + eps_2
+Y = 2 + X_1 + X_2 + eps_3
+```
+
+The points are approximatively aligned, we obtain almost a positive linear straight line because there is a linear equation between X_1 and X_2.
+
+
+### Question c)
+
+```{r}
+
+# turn the matrix into a data frame
+dataFrame = data.frame(Y)
+
+# creation of the linear model
+reg = lm(formula = X1 ~ . , data = dataFrame)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
 
 

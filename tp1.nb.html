@@ -178,18 +178,9 @@ $(document).ready(function () {
 <h3>Question a)</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0LnNlZWQoMClcbiMgY3JlYXRpb24gb2YgdGhlIHZlY3RvclxudiA9IHJub3JtKDYwMDAqMjAxLCBtZWFuPTAsIHNkPTEpXG4jIGNyZWF0aW9uIG9mIHRoZSBtYXRyaXggNjAwMCBsaW5lcyBhbmQgMjAxIGNvbHVtbnNcbm1hdCA9IG1hdHJpeChkYXRhID0gdiwgbnJvdyA9IDYwMDAsIG5jb2wgPSAyMDEpXG4jIHR1cm4gdGhlIG1hdHJpeCBpbnRvIGEgZGF0YSBmcmFtZVxuZGF0YUZyYW1lID0gZGF0YS5mcmFtZShtYXQpXG4jIGNyZWF0aW9uIG9mIHRoZSBsaW5lYXIgbW9kZWxcbnJlZyA9IGxtKGZvcm11bGEgPSBYMSB+IC4gLCBkYXRhID0gZGF0YUZyYW1lKVxuIyB1bmNvbW1lbnQgdGhhdCBmb2xsb3dpbmcgcGFydCB0byBzZWUgdGhlIHN1bW1hcnkgb2YgdGhlIHJlZ3Jlc3Npb25cbiMgc3VtbWFyeShyZWcpXG5gYGAifQ== -->
-<pre class="r"><code>set.seed(0)
-# creation of the vector
-v = rnorm(6000*201, mean=0, sd=1)
-# creation of the matrix 6000 lines and 201 columns
-mat = matrix(data = v, nrow = 6000, ncol = 201)
-# turn the matrix into a data frame
-dataFrame = data.frame(mat)
-# creation of the linear model
-reg = lm(formula = X1 ~ . , data = dataFrame)
-# uncomment that following part to see the summary of the regression
-# summary(reg)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc2V0LnNlZWQoMClcbiMgY3JlYXRpb24gb2YgdGhlIHZlY3RvclxudiA9IHJub3JtKDYwMDAqMjAxLCBtZWFuPTAsIHNkPTEpXG4jIGNyZWF0aW9uIG9mIHRoZSBtYXRyaXggNjAwMCBsaW5lcyBhbmQgMjAxIGNvbHVtbnNcbm1hdCA9IG1hdHJpeChkYXRhID0gdiwgbnJvdyA9IDYwMDAsIG5jb2wgPSAyMDEpXG4jIHR1cm4gdGhlIG1hdHJpeCBpbnRvIGEgZGF0YSBmcmFtZVxuZGF0YUZyYW1lID0gZGF0YS5mcmFtZShtYXQpXG4jIGNyZWF0aW9uIG9mIHRoZSBsaW5lYXIgbW9kZWxcbnJlZyA9IGxtKGZvcm11bGEgPSBYMSB+IC4gLCBkYXRhID0gZGF0YUZyYW1lKVxuIyB1bmNvbW1lbnQgdGhhdCBmb2xsb3dpbmcgcGFydCB0byBzZWUgdGhlIHN1bW1hcnkgb2YgdGhlIHJlZ3Jlc3Npb25cbiMgc3VtbWFyeShyZWcpXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r set.seed(0) # creation of the vector v = rnorm(6000*201, mean=0, sd=1) # creation of the matrix 6000 lines and 201 columns mat = matrix(data = v, nrow = 6000, ncol = 201) # turn the matrix into a data frame dataFrame = data.frame(mat) # creation of the linear model reg = lm(formula = X1 ~ . , data = dataFrame) # uncomment that following part to see the summary of the regression # summary(reg)</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -212,29 +203,85 @@ y &amp; \mu_1 &amp; \mu_2 &amp; \cdots &amp; \mu_{200} \\
 <h3>Question c)</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHN0b2NrIGluIHRoZSB2ZWN0b3IgY29lZiBhbGwgdGhlIHAtdmFsdWVzXG5jb2VmIDwtIHN1bW1hcnkocmVnKSRjb2VmZmljaWVudHNbLCA0XVxuXG4jIGhlcmUgd2Ugc2VsZWN0IHRoZSBwLXZhbHVlcyBhc3Nlc3NlZCBhcyBzaWduaWZpY2FudGx5IG5vbi16ZXJvIGF0IGxldmVsIDUlXG5jb2VmW2NvZWYgPCAwLjA1XVxuXG4jIGNvdW50IHRoZSBudW1iZXIgb2YgdGhvc2Ugc2VsZWN0ZWQgY29lZmZpY2llbnRzXG5sZW5ndGgoY29lZltjb2VmIDwgMC4wNV0pXG5cbmBgYCJ9 -->
-<pre class="r"><code>
-# stock in the vector coef all the p-values
-coef &lt;- summary(reg)$coefficients[, 4]
-
-# here we select the p-values assessed as significantly non-zero at level 5%
-coef[coef &lt; 0.05]
-
-# count the number of those selected coefficients
-length(coef[coef &lt; 0.05])
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuXG4jIHN0b2NrIGluIHRoZSB2ZWN0b3IgY29lZiBhbGwgdGhlIHAtdmFsdWVzXG5jb2VmIDwtIHN1bW1hcnkocmVnKSRjb2VmZmljaWVudHNbLCA0XVxuXG4jIGhlcmUgd2Ugc2VsZWN0IHRoZSBwLXZhbHVlcyBhc3Nlc3NlZCBhcyBzaWduaWZpY2FudGx5IG5vbi16ZXJvIGF0IGxldmVsIDUlXG5jb2VmW2NvZWYgPCAwLjA1XVxuXG4jIGNvdW50IHRoZSBudW1iZXIgb2YgdGhvc2Ugc2VsZWN0ZWQgY29lZmZpY2llbnRzXG5sZW5ndGgoY29lZltjb2VmIDwgMC4wNV0pXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r</p>
+</div>
+</div>
+<div id="stock-in-the-vector-coef-all-the-p-values" class="section level1">
+<h1>stock in the vector coef all the p-values</h1>
+<p>coef &lt;- summary(reg)$coefficients[, 4]</p>
+</div>
+<div id="here-we-select-the-p-values-assessed-as-significantly-non-zero-at-level-5" class="section level1">
+<h1>here we select the p-values assessed as significantly non-zero at level 5%</h1>
+<p>coef[coef &lt; 0.05]</p>
+</div>
+<div id="count-the-number-of-those-selected-coefficients" class="section level1">
+<h1>count the number of those selected coefficients</h1>
+<p>length(coef[coef &lt; 0.05])</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>This result is not expected at all since we computed random independant variables from the classic Gaussian model <span class="math inline">\(\mathcal{N}(0, 1)\)</span>. All the <span class="math inline">\(\beta_k\)</span> should be equals to zero, however this is not the case because as there is many data, the linear model find some correlation between vectors that do not really exists.</p>
 </div>
-</div>
 <div id="part-two" class="section level1">
 <h1>Part two</h1>
+<div id="question-a-1" class="section level3">
+<h3>Question a)</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5zZXQuc2VlZCgzKVxuXG4jIGNyZWF0aW9uIG9mIHRocmVlIHZlY3RvcnNcbmVwc18xIDwtIHJub3JtKDEwMDApXG5lcHNfMiA8LSBybm9ybSgxMDAwKVxuZXBzXzMgPC0gcm5vcm0oMTAwMClcblxuIyBjcmVhdGlvbiBvZiB0aGUgbW9kZWxcblhfMSA9IGVwc18xXG5YXzIgPSAzKlhfMSArIGVwc18yXG5ZID0gMiArIFhfMSArIFhfMiArIGVwc18zXG5cbiMgcGxvdCB0aGUgY2xvdWQgb2YgcG9pbnRzIChYXzEsWF8yKVxucGxvdChYXzEsIFhfMilcblxuXG4jIGNyZWF0aW9uIG9mIHRocmVlIG5ldyB2ZWN0b3JzXG5lcHNfMSA8LSBybm9ybSgxMClcbmVwc18yIDwtIHJub3JtKDEwKVxuZXBzXzMgPC0gcm5vcm0oMTApXG5cbiMgY3JlYXRpb24gb2YgdGhlIG5ldyBtb2RlbFxuWF8xID0gZXBzXzFcblhfMiA9IDMqWF8xICsgZXBzXzJcblkgPSAyICsgWF8xICsgWF8yICsgZXBzXzNcbmBgYCJ9 -->
+<pre class="r"><code>
+set.seed(3)
+
+# creation of three vectors
+eps_1 &lt;- rnorm(1000)
+eps_2 &lt;- rnorm(1000)
+eps_3 &lt;- rnorm(1000)
+
+# creation of the model
+X_1 = eps_1
+X_2 = 3*X_1 + eps_2
+Y = 2 + X_1 + X_2 + eps_3
+
+# plot the cloud of points (X_1,X_2)
+plot(X_1, X_2)
+
+
+# creation of three new vectors
+eps_1 &lt;- rnorm(10)
+eps_2 &lt;- rnorm(10)
+eps_3 &lt;- rnorm(10)
+
+# creation of the new model
+X_1 = eps_1
+X_2 = 3*X_1 + eps_2
+Y = 2 + X_1 + X_2 + eps_3</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The points are approximatively aligned, we obtain almost a positive linear straight line because there is a linear equation between X_1 and X_2.</p>
+</div>
+<div id="question-c-1" class="section level3">
+<h3>Question c)</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHR1cm4gdGhlIG1hdHJpeCBpbnRvIGEgZGF0YSBmcmFtZVxuZGF0YUZyYW1lID0gZGF0YS5mcmFtZShZKVxuXG4jIGNyZWF0aW9uIG9mIHRoZSBsaW5lYXIgbW9kZWxcbnJlZyA9IGxtKGZvcm11bGEgPSBYMSB+IC4gLCBkYXRhID0gZGF0YUZyYW1lKVxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5gYGAifQ== -->
+<pre class="r"><code>
+# turn the matrix into a data frame
+dataFrame = data.frame(Y)
+
+# creation of the linear model
+reg = lm(formula = X1 ~ . , data = dataFrame)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiVFAxIC0gRGF0YSBNaW5pbmciCm91dHB1dDoKICBodG1sX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCiMgUGFydCBvbmUKCiMjIyBRdWVzdGlvbiBhKQoKYGBge3J9CgpzZXQuc2VlZCgwKQoKIyBjcmVhdGlvbiBvZiB0aGUgdmVjdG9yCnYgPSBybm9ybSg2MDAwKjIwMSwgbWVhbj0wLCBzZD0xKQoKIyBjcmVhdGlvbiBvZiB0aGUgbWF0cml4IDYwMDAgbGluZXMgYW5kIDIwMSBjb2x1bW5zCm1hdCA9IG1hdHJpeChkYXRhID0gdiwgbnJvdyA9IDYwMDAsIG5jb2wgPSAyMDEpCgojIHR1cm4gdGhlIG1hdHJpeCBpbnRvIGEgZGF0YSBmcmFtZQpkYXRhRnJhbWUgPSBkYXRhLmZyYW1lKG1hdCkKCiMgY3JlYXRpb24gb2YgdGhlIGxpbmVhciBtb2RlbApyZWcgPSBsbShmb3JtdWxhID0gWDEgfiAuICwgZGF0YSA9IGRhdGFGcmFtZSkKCiMgdW5jb21tZW50IHRoYXQgZm9sbG93aW5nIHBhcnQgdG8gc2VlIHRoZSBzdW1tYXJ5IG9mIHRoZSByZWdyZXNzaW9uCiMgc3VtbWFyeShyZWcpCgpgYGAKCiMjIyBRdWVzdGlvbiBiKQoKV2UgYXNzdW1lIHRoYXQgJHkkIGFuZCAkXGZvcmFsbCBpJCwgJFxtdV9pJCBpcyBhIHZlY3RvciBvZiBzaXplICQ2MDAwJC4KClxiZWdpbntibWF0cml4fQp5ICYgXG11XzEgJiBcbXVfMiAmIFxjZG90cyAmIFxtdV97MjAwfSBcXApcZW5ke2JtYXRyaXh9CgpUaGUgYXNzb2NpYXRlZCBlcXVhdGlvbiBpcyA6CgokeSA9IFxkaXNwbGF5c3R5bGUgXHN1bV97az0xfV57MjAwfSBcYmV0YV9rIFxtdV9rICsgXGVwc2lsb24kCgpXZSBleHBlY3QgdGhhdCBhbGwgJFxiZXRhX2skIGFyZSBlcXVhbHMgdG8gJDAkIGJlY2F1c2UgdGhlcmUgaXMgbm8gY29ycmVsYXRpb24gYmV0d2VlbiB2ZWN0b3JzLiBXZSBleHBlY3QgdGhhdCAkXGVwc2lsb24kIGlzIHRoZSBvbmx5IHRoaW5nIGRpZmZlcmVudCB0aGFuICQwJCwgc28gJFxlcHNpbG9uJCBpcyBlcXVhbCB0byAkeSQuCgohW10oLi9icmllZl9zdW1tYXJ5XzEucG5nKQoKIyMjIFF1ZXN0aW9uIGMpCgpgYGB7cn0KCiMgc3RvY2sgaW4gdGhlIHZlY3RvciBjb2VmIGFsbCB0aGUgcC12YWx1ZXMKY29lZiA8LSBzdW1tYXJ5KHJlZykkY29lZmZpY2llbnRzWywgNF0KCiMgaGVyZSB3ZSBzZWxlY3QgdGhlIHAtdmFsdWVzIGFzc2Vzc2VkIGFzIHNpZ25pZmljYW50bHkgbm9uLXplcm8gYXQgbGV2ZWwgNSUKY29lZltjb2VmIDwgMC4wNV0KCiMgY291bnQgdGhlIG51bWJlciBvZiB0aG9zZSBzZWxlY3RlZCBjb2VmZmljaWVudHMKbGVuZ3RoKGNvZWZbY29lZiA8IDAuMDVdKQoKYGBgCgpUaGlzIHJlc3VsdCBpcyBub3QgZXhwZWN0ZWQgYXQgYWxsIHNpbmNlIHdlIGNvbXB1dGVkIHJhbmRvbSBpbmRlcGVuZGFudCB2YXJpYWJsZXMgZnJvbSB0aGUgY2xhc3NpYyBHYXVzc2lhbiBtb2RlbCAkXG1hdGhjYWx7Tn0oMCwgMSkkLiBBbGwgdGhlICRcYmV0YV9rJCBzaG91bGQgYmUgZXF1YWxzIHRvIHplcm8sIGhvd2V2ZXIgdGhpcyBpcyBub3QgdGhlIGNhc2UgYmVjYXVzZSBhcyB0aGVyZSBpcyBtYW55IGRhdGEsIHRoZSBsaW5lYXIgbW9kZWwgZmluZCBzb21lIGNvcnJlbGF0aW9uIGJldHdlZW4gdmVjdG9ycyB0aGF0IGRvIG5vdCByZWFsbHkgZXhpc3RzLgoKIyBQYXJ0IHR3bwoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVFAxIC0gRGF0YSBNaW5pbmciCm91dHB1dDoKICBodG1sX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCiMgUGFydCBvbmUKCiMjIyBRdWVzdGlvbiBhKQoKYGBge3J9CgpzZXQuc2VlZCgwKQoKIyBjcmVhdGlvbiBvZiB0aGUgdmVjdG9yCnYgPSBybm9ybSg2MDAwKjIwMSwgbWVhbj0wLCBzZD0xKQoKIyBjcmVhdGlvbiBvZiB0aGUgbWF0cml4IDYwMDAgbGluZXMgYW5kIDIwMSBjb2x1bW5zCm1hdCA9IG1hdHJpeChkYXRhID0gdiwgbnJvdyA9IDYwMDAsIG5jb2wgPSAyMDEpCgojIHR1cm4gdGhlIG1hdHJpeCBpbnRvIGEgZGF0YSBmcmFtZQpkYXRhRnJhbWUgPSBkYXRhLmZyYW1lKG1hdCkKCiMgY3JlYXRpb24gb2YgdGhlIGxpbmVhciBtb2RlbApyZWcgPSBsbShmb3JtdWxhID0gWDEgfiAuICwgZGF0YSA9IGRhdGFGcmFtZSkKCiMgdW5jb21tZW50IHRoYXQgZm9sbG93aW5nIHBhcnQgdG8gc2VlIHRoZSBzdW1tYXJ5IG9mIHRoZSByZWdyZXNzaW9uCiMgc3VtbWFyeShyZWcpCgpgYGAKCiMjIyBRdWVzdGlvbiBiKQoKV2UgYXNzdW1lIHRoYXQgJHkkIGFuZCAkXGZvcmFsbCBpJCwgJFxtdV9pJCBpcyBhIHZlY3RvciBvZiBzaXplICQ2MDAwJC4KClxiZWdpbntibWF0cml4fQp5ICYgXG11XzEgJiBcbXVfMiAmIFxjZG90cyAmIFxtdV97MjAwfSBcXApcZW5ke2JtYXRyaXh9CgpUaGUgYXNzb2NpYXRlZCBlcXVhdGlvbiBpcyA6CgokeSA9IFxkaXNwbGF5c3R5bGUgXHN1bV97az0xfV57MjAwfSBcYmV0YV9rIFxtdV9rICsgXGVwc2lsb24kCgpXZSBleHBlY3QgdGhhdCBhbGwgJFxiZXRhX2skIGFyZSBlcXVhbHMgdG8gJDAkIGJlY2F1c2UgdGhlcmUgaXMgbm8gY29ycmVsYXRpb24gYmV0d2VlbiB2ZWN0b3JzLiBXZSBleHBlY3QgdGhhdCAkXGVwc2lsb24kIGlzIHRoZSBvbmx5IHRoaW5nIGRpZmZlcmVudCB0aGFuICQwJCwgc28gJFxlcHNpbG9uJCBpcyBlcXVhbCB0byAkeSQuCgohW10oLi9icmllZl9zdW1tYXJ5XzEucG5nKQoKIyMjIFF1ZXN0aW9uIGMpCgpgYGB7cn0KCiMgc3RvY2sgaW4gdGhlIHZlY3RvciBjb2VmIGFsbCB0aGUgcC12YWx1ZXMKY29lZiA8LSBzdW1tYXJ5KHJlZykkY29lZmZpY2llbnRzWywgNF0KCiMgaGVyZSB3ZSBzZWxlY3QgdGhlIHAtdmFsdWVzIGFzc2Vzc2VkIGFzIHNpZ25pZmljYW50bHkgbm9uLXplcm8gYXQgbGV2ZWwgNSUKY29lZltjb2VmIDwgMC4wNV0KCiMgY291bnQgdGhlIG51bWJlciBvZiB0aG9zZSBzZWxlY3RlZCBjb2VmZmljaWVudHMKbGVuZ3RoKGNvZWZbY29lZiA8IDAuMDVdKQoKYGBgCgpUaGlzIHJlc3VsdCBpcyBub3QgZXhwZWN0ZWQgYXQgYWxsIHNpbmNlIHdlIGNvbXB1dGVkIHJhbmRvbSBpbmRlcGVuZGFudCB2YXJpYWJsZXMgZnJvbSB0aGUgY2xhc3NpYyBHYXVzc2lhbiBtb2RlbCAkXG1hdGhjYWx7Tn0oMCwgMSkkLiBBbGwgdGhlICRcYmV0YV9rJCBzaG91bGQgYmUgZXF1YWxzIHRvIHplcm8sIGhvd2V2ZXIgdGhpcyBpcyBub3QgdGhlIGNhc2UgYmVjYXVzZSBhcyB0aGVyZSBpcyBtYW55IGRhdGEsIHRoZSBsaW5lYXIgbW9kZWwgZmluZCBzb21lIGNvcnJlbGF0aW9uIGJldHdlZW4gdmVjdG9ycyB0aGF0IGRvIG5vdCByZWFsbHkgZXhpc3RzLgoKIyBQYXJ0IHR3bwoKIyMjIFF1ZXN0aW9uIGEpCgpgYGB7cn0KCnNldC5zZWVkKDMpCgojIGNyZWF0aW9uIG9mIHRocmVlIHZlY3RvcnMKZXBzXzEgPC0gcm5vcm0oMTAwMCkKZXBzXzIgPC0gcm5vcm0oMTAwMCkKZXBzXzMgPC0gcm5vcm0oMTAwMCkKCiMgY3JlYXRpb24gb2YgdGhlIG1vZGVsClhfMSA9IGVwc18xClhfMiA9IDMqWF8xICsgZXBzXzIKWSA9IDIgKyBYXzEgKyBYXzIgKyBlcHNfMwoKIyBwbG90IHRoZSBjbG91ZCBvZiBwb2ludHMgKFhfMSxYXzIpCnBsb3QoWF8xLCBYXzIpCgoKIyBjcmVhdGlvbiBvZiB0aHJlZSBuZXcgdmVjdG9ycwplcHNfMSA8LSBybm9ybSgxMCkKZXBzXzIgPC0gcm5vcm0oMTApCmVwc18zIDwtIHJub3JtKDEwKQoKIyBjcmVhdGlvbiBvZiB0aGUgbmV3IG1vZGVsClhfMSA9IGVwc18xClhfMiA9IDMqWF8xICsgZXBzXzIKWSA9IDIgKyBYXzEgKyBYXzIgKyBlcHNfMwpgYGAKClRoZSBwb2ludHMgYXJlIGFwcHJveGltYXRpdmVseSBhbGlnbmVkLCB3ZSBvYnRhaW4gYWxtb3N0IGEgcG9zaXRpdmUgbGluZWFyIHN0cmFpZ2h0IGxpbmUgYmVjYXVzZSB0aGVyZSBpcyBhIGxpbmVhciBlcXVhdGlvbiBiZXR3ZWVuIFhfMSBhbmQgWF8yLgoKCiMjIyBRdWVzdGlvbiBjKQoKYGBge3J9CgojIHR1cm4gdGhlIG1hdHJpeCBpbnRvIGEgZGF0YSBmcmFtZQpkYXRhRnJhbWUgPSBkYXRhLmZyYW1lKFkpCgojIGNyZWF0aW9uIG9mIHRoZSBsaW5lYXIgbW9kZWwKcmVnID0gbG0oZm9ybXVsYSA9IFgxIH4gLiAsIGRhdGEgPSBkYXRhRnJhbWUpCgoKCgoKCgoKCgoKCgoKCgpgYGAKCgoKCgoKCgoKCgo=</div>
 
 
 
