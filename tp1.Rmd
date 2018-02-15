@@ -21,6 +21,7 @@ mat = matrix(data = v, nrow = 6000, ncol = 201)
 
 # turn the matrix into a data frame
 dataFrame = data.frame(mat)
+dataFrame
 
 # creation of the linear model
 reg = lm(formula = X1 ~ . , data = dataFrame)
@@ -94,33 +95,32 @@ eps_3 <- rnorm(10)
 X_1 = eps_1
 X_2 = 3*X_1 + eps_2
 Y = 2 + X_1 + X_2 + eps_3
+
+mat_reg1 <- matrix(data = c(Y, X_1), nrow = 10, ncol = 2)
+mat_reg2 <- matrix(data = c(Y, X_2), nrow = 10, ncol = 2)
+mat_reg3 <- matrix(data = c(Y, X_1, X_2), nrow = 10, ncol =3)
+
+# turn the matrix into a data frame
+dataFrame1 = data.frame(mat_reg1)
+dataFrame2 = data.frame(mat_reg2)
+dataFrame3 = data.frame(mat_reg3)
+
+# creation of the linear model
+reg1 = lm(formula = X1 ~ . , data = dataFrame1)
+reg2 = lm(formula = X1 ~ . , data = dataFrame2)
+reg3 = lm(formula = X1 ~ . , data = dataFrame3)
+
+summary(reg1)
+summary(reg2)
+summary(reg3)
 ```
 
-The points are approximatively aligned, we obtain almost a positive linear straight line because there is a linear equation between X_1 and X_2.
+The points are approximatively aligned, we obtain almost a positive linear straight line because there is a linear equation between $X_1$ and $X_2$.
 
 
 ### Question c)
 
 ```{r}
-
-# turn the matrix into a data frame
-dataFrame = data.frame(Y)
-
-# creation of the linear model
-reg = lm(formula = X1 ~ . , data = dataFrame)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
