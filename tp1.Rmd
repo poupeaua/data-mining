@@ -120,7 +120,19 @@ The points are approximatively aligned, we obtain almost a positive linear strai
 
 ### Question c)
 
+With this estimation, we can remark that the predictor $X_1$ has any effect on the prediction of $Y$.
+
+
+### Question d)
+
 ```{r}
+
+plot(density(X_1))
+lines(1, y = NULL, type = "l")
+plot(density(X_2))
+
+quantile(X_1, 0.025)
+quantile(X_1, 0.975)
 
 
 
