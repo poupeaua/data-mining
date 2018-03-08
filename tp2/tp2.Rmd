@@ -123,6 +123,16 @@ The Karitiana population is well identified by the PC5. The Pima population is w
 
 #### d)
 
+
+```{r}
+
+inertia = vectProportionOfVariance[1] + vectProportionOfVariance[2]
+
+sprintf("The inertia is equal to %f.", inertia)
+
+```
+
+
 According to what we have seen until now, we have two ideas.
 
 The first idea is that we have seen that we can distinguish two population using two principal components. Therefore, as there are 27 different populations, we could deduce that we would need 14 pairs of principal components. 
@@ -153,4 +163,102 @@ sprintf("Number of principal components needed in order to cover at least 99 per
 
 ```
 
-With the test we have established just before we can see that $1/10$  of the data contain $25%$ of the variance : So it seems like a good idea to use only $50$ PC to  
+With the test we have established just before we can see that $1/10$  of the data contain $25%$ of the variance : So it seems like a good idea to use only $50$ PC to get most of the information within least data. So we might use that number of PC in order to represent genetic markers.
+The other numbers give a idea of the number needed if we want to cover more information.
+
+### 4. PCR Principal Components Regression
+
+#### a)
+
+```{r}
+
+# pcaNAm2$x are scores : size 494 * 494 matrix. We take all the ligns but only 250 columns
+first250PCs <- pcaNAm2$x[, c(1:250)]
+
+# size 494 * 251 => first column become the longitude
+long <- c(NAm2$long, first250PCs)
+longMatrix <- matrix(data = long, nrow = 494, ncol = 251)
+dataFrameLong <- data.frame(longMatrix)
+#dataFrameLong
+lmlong = lm(formula = X1 ~ . , data = dataFrameLong)
+
+# size 494 * 251 => first column become the latitude
+lat <- c(NAm2$lat, first250PCs)
+latMatrix <- matrix(data = lat, nrow = 494, ncol = 251)
+dataFrameLat <- data.frame(latMatrix)
+dataFrameLat
+lmlat = lm(formula = X1 ~ . , data = dataFrameLat)
+
+plot(lmlong$fitted.values,lmlat$fitted.values,col="white")
+
+for (i in 1:npop) {
+  #print(names[i])
+  lines(lmlong$fitted.values[which(NAm2[,3]==names[i])],
+        lmlat$fitted.values[which(NAm2[,3]==names[i])],
+        type="p",col=colPalette[i],pch=pch[i])
+}
+
+legend("bottomleft",legend=names,col=colPalette,lty=-1,pch=pch,cex=.75,ncol=3,lwd=2)
+
+library(maps);map("world",add=T)
+
+```
+
+If we compare it to the map from the question 1, we can clearly say that this map represent very optimisticaly places where population live. It looks quite messy if we just take a look around Panama. However if we examine the estimated places of the Chipewyan, Cree, Ojibwa, Pima and Huiliche populations, we can very distinctly see that the estimation is pretty accurate.
+
+#### b) 
+
+```{r}
+
+# import the library needed to use rdist.earth
+library("fields")
+
+# select the theory latitude and longitude of populations
+theoryPosition <- matrix(data = c(NAm2$long, NAm2$lat), nrow = 494, ncol = 2)
+#theoryPosition
+
+# vector used to stock the mean of distance for each population
+stock <- c()
+
+tmpIndex <- 0
+for (i in 1:npop) {
+  # vector long estimated for population n°i
+  tmpLong <- lmlong$fitted.values[which(NAm2[,3]==names[i])]
+  
+  # vector lat estimated for population n°i
+  tmpLat <- lmlat$fitted.values[which(NAm2[,3]==names[i])]
+  
+  # matrix of the estimated positions
+  estimatedPosition <- matrix(data = c(tmpLong, tmpLat), ncol = 2)
+  #print(estimatedPosition)
+  
+  len <- length(estimatedPosition)/2
+  
+  # by making unique we assume that two estimated coordinates will never be at the same exact position
+  diff <- unique(rdist.earth(x1 = theoryPosition[tmpIndex:(tmpIndex+len), ], x2 = estimatedPosition, miles = F, R = NULL))
+  
+  # stock the mean of distance from the theorical position in kilometers
+  stock[i] <- mean(diff)
+  
+  tmpIndex <- tmpIndex + len
+}
+
+plot(c(1:npop), stock, main = "Mean difference in kilometers between theorical and estimated positions",
+     xlab = "N° associated to the population", 
+     ylab = "Mean of the distance in kilometers")
+linearTest <- lm(stock ~ c(1:npop))
+abline(linearTest)
+
+```
+
+Thanks to the previous graph, we can say that the estimated positions are on average approximately $1100$ kilometers away from the theorical position. It might seem a lot at first sight because it sounds huge if we just have a human sensible approach. Nonetheless it is not really a lot in reality if we size to the scale of the earth. Indeed, we could just think about the fact that the earth's circonference is equal to $40075$ kilometers. If we draw a circle around the theorical position for each population, on average, the estimation of the position will be contained inside the circle.    
+
+
+### 5) PCR and Cross-Validation
+
+#### a)
+
+
+
+
+
