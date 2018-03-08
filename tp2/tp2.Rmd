@@ -1,0 +1,156 @@
+---
+title: "TP2 geneticData Mining - PCA-regression in genetics"
+output: html_notebook
+---
+
+Lamyaa BOUZBIBA
+Alexandre POUPEAU
+Eloise JULIEN
+
+### 1. geneticData
+
+```{r}
+
+NAm2 = read.table("NAm2.txt", header = TRUE)
+
+# unique is used to get the name of all population / ethnics without duplicates
+names=unique(NAm2$Pop)
+npop=length(names)
+
+# coordinates for each pop
+coord=unique(NAm2[, c("Pop","long","lat")])
+colPalette=rep(c("black","red","cyan","orange","brown","blue","pink","purple","darkgreen"),3)
+
+# type 16 = circle / type 15 = square / type 25 = triangle
+pch=rep(c(16,15,25),each=9)
+
+# the display works because for each population we have the latitude and the longitude
+plot(coord[, c("long","lat")],pch=pch,col=colPalette,asp=1)
+
+# asp allows to have the correct ratio between  axis  longitude and latitude
+# Then the map is not deformed  
+legend("bottomleft",legend=names,col=colPalette,lty=-1,pch=pch,cex=.75,ncol=2,lwd=2)
+
+library(maps);map("world",add=T)
+
+
+```
+
+The description of the script is in the commentaries above.
+
+### 2. Regression
+
+```{r}
+
+# turn the matrix into a geneticData frame
+geneticData = NAm2[,-c(1:7)]
+
+geneticDataFrame = data.frame(geneticData)
+
+# creation of the linear model
+reg = lm(formula = long ~ . , data = geneticDataFrame)
+
+# uncomment that following part to see the summary of the regression
+# summary(reg)
+
+```
+
+All values are NA (Not Available) because we have too much predictors. The $X$ matrix is cannot be reversed so we have to use the PCA method to counter that problem.
+
+### 3.PCA Principal Component Analysis
+
+#### a) 
+
+The main goal of the PCA is to reduce the number of predictors. In order to achieve that, we have to extract the most important components of the geneticData set. These new variables are a linear combinaison of the original ones. The number of principal components is smaller than the number of original variables. The aim is to maximize the variation of the geneticData set.
+
+#### b)
+
+```{r}
+
+# install.packages("factoextra")
+
+library(factoextra)
+
+allGenes <- geneticDataFrame[, -1]
+
+pcaNAm2 <- prcomp(allGenes, scale = FALSE)
+
+fviz_eig(pcaNAm2)
+
+vectProportionOfVariance <- pcaNAm2.pca$sdev^2/sum(pcaNAm2.pca$sdev^2)
+
+# summary(pcaNAm2.pca)
+
+
+```
+
+It is better to use scale = TRUE by convention because we get a better representation of the percentage of explained values.
+
+FALSE : 494 = linear combianison of the 5000 genes
+We notice that we get only 494 principal components instead of approximately 5000 which correspond to the number of genes. This can be explained because "" in the covariance matrix the eigenvalues from 495 to ~5000 are equals to zero. In reality, we only select the genes that best explain the model up to 500. If we had to really find the "best-explaining", which means finding the most explicative genes from 1 to 5000 we would have to test all the combinaisons of 494 genes.   
+
+#### c)
+
+```{r}
+
+caxes=c(1,2)
+plot(pcaNAm2$x[,caxes],col="white")
+
+for (i in 1:npop) {
+  # print(names[i])
+  lines(pcaNAm2$x[which(NAm2[,3]==names[i]),caxes],
+  type="p",col=colPalette[i],pch=pch[i])
+}
+legend("topleft",legend=names,col=colPalette,lty=-
+1,pch=pch,cex=.65,ncol=3,lwd=2)
+
+caxes=c(5,6)
+plot(pcaNAm2$x[,caxes],col="white")
+
+for (i in 1:npop) {
+  # print(names[i])
+  lines(pcaNAm2$x[which(NAm2[,3]==names[i]),caxes],
+  type="p",col=colPalette[i],pch=pch[i])
+}
+legend("topright",legend=names,col=colPalette,lty=-
+1,pch=pch,cex=.65,ncol=3,lwd=2)
+
+```
+
+The Ache population is well identified by both components. The Surui can also be identified by both components but more especially by the PC1.
+
+The Karitiana population is well identified by the PC5. The Pima population is well identified by the PC6.
+
+#### d)
+
+According to what we have seen until now, we have two ideas.
+
+The first idea is that we have seen that we can distinguish two population using two principal components. Therefore, as there are 27 different populations, we could deduce that we would need 14 pairs of principal components. 
+
+However, we can ask ourselves if we can really each time distinguish two different populations using two principal components. It might not be the case because we have just tested it with two pairs of principal components. Thus, we could think about an alternative way, which is adding the variance of the first principal components until the sum is equal to a certain level. This level could be 25% or 50%. This last one means using a lot of principal components. 
+
+```{r}
+
+numberOfPCs <- function(vectorProportionOfVariance, percentage) {
+  tmp = 0.0
+  i = 1
+  while (tmp < percentage) {
+    tmp = tmp + vectProportionOfVariance[i]
+    i = i + 1
+  }
+  return(i)
+}
+
+nbrPC25 <- numberOfPCs(vectProportionOfVariance, 0.25)
+nbrPC50 <- numberOfPCs(vectProportionOfVariance, 0.5)
+nbrPC75 <- numberOfPCs(vectProportionOfVariance, 0.75)
+nbrPC99 <- numberOfPCs(vectProportionOfVariance, 0.99)
+
+sprintf("Number of principal components needed in order to cover at least 25 percent of variance : %i", nbrPC25)
+sprintf("Number of principal components needed in order to cover at least 50 percent of variance : %i", nbrPC50)
+sprintf("Number of principal components needed in order to cover at least 75 percent of variance : %i", nbrPC75)
+sprintf("Number of principal components needed in order to cover at least 99 percent of variance : %i", nbrPC99)
+
+```
+
+With the test we have established just before we can see that $1/10$  of the data contain $25%$ of the variance : So it seems like a good idea to use only $50$ PC to  
