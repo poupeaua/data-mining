@@ -127,7 +127,7 @@ With this estimation, we can remark that the predictor $X_1$ has any effect on t
 
 ```{r}
 
-plot(density(X_1))
+plot(density(X_1), )
 lines(1, y = NULL, type = "l")
 plot(density(X_2))
 
