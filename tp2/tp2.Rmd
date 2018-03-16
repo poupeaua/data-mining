@@ -84,10 +84,9 @@ vectProportionOfVariance <- pcaNAm2$sdev^2/sum(pcaNAm2$sdev^2)
 
 ```
 
-It is better to use scale = FALSE by convention because we get a better representation of the percentage of explained values.
+It is better to use scale = FALSE by convention because we get a better representation of the percentage of explained values. As we work on genes and every component are composed of $1$ and $0$, vectors are already normed.
 
-FALSE : 494 = linear combianison of the 5000 genes
-We notice that we get only 494 principal components instead of approximately 5000 which correspond to the number of genes. This can be explained because "" in the covariance matrix the eigenvalues from 495 to ~5000 are equals to zero. In reality, we only select the genes that best explain the model up to 500. If we had to really find the "best-explaining", which means finding the most explicative genes from 1 to 5000 we would have to test all the combinaisons of 494 genes.   
+We notice that we get only 494 principal components instead of approximately 5000 which correspond to the number of genes. This can be explained because the PCA make linear combinaison to turn $5000$ components to $494$.
 
 #### c)
 
@@ -186,7 +185,6 @@ lmlong = lm(formula = X1 ~ . , data = dataFrameLong)
 lat <- c(NAm2$lat, first250PCs)
 latMatrix <- matrix(data = lat, nrow = 494, ncol = 251)
 dataFrameLat <- data.frame(latMatrix)
-dataFrameLat
 lmlat = lm(formula = X1 ~ . , data = dataFrameLat)
 
 plot(lmlong$fitted.values,lmlat$fitted.values,col="white")
@@ -199,7 +197,7 @@ for (i in 1:npop) {
 }
 
 legend("bottomleft",legend=names,col=colPalette,lty=-1,pch=pch,cex=.75,ncol=3,lwd=2)
-
+library(maps);map("world",add=T)
 
 ```
 
@@ -234,7 +232,8 @@ for (i in 1:npop) {
   len <- length(estimatedPosition)/2
   
   # by making unique we assume that two estimated coordinates will never be at the same exact position
-  diff <- unique(rdist.earth(x1 = theoryPosition[tmpIndex:(tmpIndex+len), ], x2 = estimatedPosition, miles = F, R = NULL))
+  
+  diff <- rdist.earth(x1 = theoryPosition[tmpIndex:(tmpIndex+len), ], x2 = estimatedPosition, miles = F)[1, ]
   
   # stock the mean of distance from the theorical position in kilometers
   stock[i] <- mean(diff)
@@ -242,11 +241,12 @@ for (i in 1:npop) {
   tmpIndex <- tmpIndex + len
 }
 
-plot(c(1:npop), stock, main = "Mean difference in kilometers between theoric and estimated positions",
+plot(c(1:npop), stock, main = "Mean difference in kilometers between theoretical and estimated positions",
      xlab = "N° associated to the population", 
      ylab = "Mean of the distance in kilometers")
 linearTest <- lm(stock ~ c(1:npop))
 abline(linearTest)
+
 
 ```
 
@@ -272,19 +272,22 @@ set
 #### b)
 
 ```{r}
-
+# we define naxes to 4 as a variable so that it will be easier to make the final algorithme
 naxes <- 4
 predictedCoord <- matrix(data = NA, nrow = 494, ncol = 2)
 
 # Regression for the longitude
-pcalong <- data.frame(cbind(long=NAm2[,c("long")], pcaNAm2$x[,1:naxes], set))
-
-reglong <- lm(formula = long ~ . , data = subset(pcalong[, 1:5], set != 1))
+#pcalong <- data.frame(cbind(long=NAm2[,c("long")], pcaNAm2$x[,1:naxes], set))
+pcalong = data.frame(cbind(long=NAm2[,c("long")],pcaNAm2$x))
+subsetpcalong <- subset(pcalong, set != 1)
+reglong <- lm(subsetpcalong[, 1] ~ . , data = subsetpcalong[, 2:naxes])
+#reglong <- lm(formula = subsetpcalong[,1] ~ . , data = subset(pcalong[, 1:(naxes+1)], set != 1))
 
 # Regression for the latitude
-pcalat <- data.frame(cbind(lat=NAm2[,c("lat")], pcaNAm2$x[,1:naxes], set))
-
-reglat <- lm(formula = lat ~ . , data = subset(pcalat[, 1:5], set != 1))
+pcalat = data.frame(cbind(lat=NAm2[,c("lat")],pcaNAm2$x))
+subsetpcalat <- subset(pcalat, set != 1)
+reglat <- lm(subsetpcalat[, 1] ~ . , data = subsetpcalat[, 2:naxes])
+#reglat <- lm(formula = lat ~ . , data = subset(pcalat[, 1:(naxes+1)], set != 1))
 
 
 # Prediction
@@ -295,7 +298,7 @@ predict_lat <- predict(reglat, newdata=data.frame(subset(pcalat, set == 1)))
 idx = 1
 for (indice in 1:494) {
   
-  if (pcalong[indice, 6] == 1) {
+  if (set[indice] == 1) {
     
     predictedCoord[indice, 1] = predict_long[idx]
     predictedCoord[indice, 2] = predict_lat[idx]
@@ -308,14 +311,20 @@ for (indice in 1:494) {
 
 ```
 
-
+We predict only the coordinates where the ligns are equals to 1 in the set.
 
 ```{r}
 
 for(i in 2:10){
     
-    reglong <- lm(formula = long ~ . , data = subset(pcalong[, 1:5], set != i))
-    reglat <- lm(formula = lat ~ . , data = subset(pcalat[, 1:5], set != i))
+    #reglong <- lm(formula = long ~ . , data = subset(pcalong[, 1:(naxes+1)], set != i))
+    #reglat <- lm(formula = lat ~ . , data = subset(pcalat[, 1:(naxes+1)], set != i))
+  
+    subsetpcalong <- subset(pcalong, set != i)
+    reglong <- lm(subsetpcalong[, 1] ~ . , data = subsetpcalong[, 2:naxes])
+    
+    subsetpcalat <- subset(pcalat, set != i)
+    reglat <- lm(subsetpcalat[, 1] ~ . , data = subsetpcalat[, 2:naxes])
     
     predict_long <- predict(reglong, newdata=data.frame(subset(pcalong, set == i)))
     predict_lat <- predict(reglat, newdata=data.frame(subset(pcalat, set == i)))
@@ -323,7 +332,7 @@ for(i in 2:10){
     idx = 1
     for (j in 1:494) {
       
-      if (pcalong[j, 6] == i){
+      if (set[j] == i){
       
         predictedCoord[j, 1] <- predict_long[idx]
         predictedCoord[j, 2] <- predict_lat[idx]
@@ -335,22 +344,23 @@ for(i in 2:10){
     
 }
 
-# predictedCoord
-
-
-# Calculation of the prediction error
+# just to check if at that step we've got something that makes sense
+data.frame(predictedCoord)
+data.frame(theoryPosition)
 
 ```
-
-
+We can clearly see that, even when we change naxes, we have the predictedCoord that make sense compared to the theoryPosition.
 
 ```{r}
 
-schtroumph <- rdist.earth(x1 = theoryPosition, x2 = predictedCoord, miles = F, R = NULL)
+dist_earth <- rdist.earth.vec(x1 = predictedCoord, x2 = theoryPosition, miles = F)
 
-vect <- schtroumph[1, ]
-mean(vect[1:30])
+vect <- dist_earth
+#mean(dist_earth)
+# mean(vect[1:30]) # moyenne ecart pour la premiere population
 
+
+# we get the index where population change. The length of index_vect is npop = 27
 index_vect <- c(1:npop)
 
 indice_main_vect <- 1
@@ -369,6 +379,8 @@ for (popName in NAm2$Pop) {
   index = index + 1
 }
 
+# Now we calculate the average difference infor each population 
+
 index_vect[npop] <- 494
 main_vect <- c(1:npop)
 indice1 <- 1
@@ -381,9 +393,9 @@ for (indice in 1:npop) {
 }
 
 stock <- main_vect
-stock
+#stock
 
-plot(c(1:npop), stock, main = "Mean difference in kilometers between theoric and estimated positions",
+plot(c(1:npop), stock, main = "Mean difference in kilometers between theoretical and estimated positions",
      xlab = "N° associated to the population", 
      ylab = "Mean of the distance in kilometers")
 linearTest <- lm(stock ~ c(1:npop))
@@ -392,16 +404,66 @@ abline(linearTest)
 
 ```
 
+Here we can see that by using the $4$ first PCA, we have a $2000$ kilometers difference. We expect that as we increase the number of PCA used, the model is better and predict more precisely the theorical coordinates
+
 #### c)
+
+N
 
 ```{r}
 
-for (naxes in 2:440){
+mean_final <- c(1:44)
+
+index <- 1
+for (naxes in seq(4,440, by = 10)){
+  
+      predictedCoord <- matrix(data = NA, nrow = 494, ncol = 2)
+  
+      for(i in 1:10){
+      
+      #reglong <- lm(formula = long ~ . , data = subset(pcalong[, 1:(naxes+1)], set != i))
+      #reglat <- lm(formula = lat ~ . , data = subset(pcalat[, 1:(naxes+1)], set != i))
+    
+      subsetpcalong <- subset(pcalong, set != i)
+      reglong <- lm(subsetpcalong[, 1] ~ . , data = subsetpcalong[, 2:naxes])
+      
+      subsetpcalat <- subset(pcalat, set != i)
+      reglat <- lm(subsetpcalat[, 1] ~ . , data = subsetpcalat[, 2:naxes])
+      
+      predict_long <- predict(reglong, newdata=data.frame(subset(pcalong, set == i)))
+      predict_lat <- predict(reglat, newdata=data.frame(subset(pcalat, set == i)))
+      
+      idx = 1
+      for (j in 1:494) {
+        
+        if (set[j] == i){
+        
+          predictedCoord[j, 1] <- predict_long[idx]
+          predictedCoord[j, 2] <- predict_lat[idx]
+          idx = idx + 1
+          
+        }
+        
+      }
+      
+  }
+  
+  dist_earth <- rdist.earth.vec(x1 = theoryPosition, x2 = predictedCoord, miles = F)
+  mean_final[index] <- mean(dist_earth)
+  index <- index + 1
   
 }
 
+
+plot(c(1:(index-1)), mean_final, main = "Mean difference in kilometers between theoretical and estimated positions",xlab = "N° of PCs used divided by 10", ylab = "Mean of the distance in kilometers", type = "l")
+
 ```
 
+As we can see, the final graph shows that as we increase the number of PCs used for the regression at the beginning the difference of distance decrease. This is quiet expected because we have more information to describe the model. However, when the number of PCs used is too large it increases the difference : this is caused by overfitting. There is the limit where the model explains the errors that we don't want the model to explain. If we compare to the result obtained in the answer 4.b, we can see in abscissa $25$ that we have a difference of distance equal to $1400$. This result is really close to what we have found before $1100$.
+
+According to this graph, we should use the first $80$ principals components to get the best prediction because this is approximately the minimum of the curve. This is the model we would keep.
+
+### 6) Conclusion
 
 
 
