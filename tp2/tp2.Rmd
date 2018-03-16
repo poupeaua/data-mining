@@ -55,7 +55,7 @@ reg = lm(formula = long ~ . , data = geneticDataFrame)
 
 ```
 
-All values are NA (Not Available) because we have too much predictors. The $X$ matrix is cannot be reversed so we have to use the PCA method to counter that problem.
+All values are NA (Not Available) because we have too much predictors (more than individuals). The $X$ matrix is cannot be reversed so we have to use the PCA method to counter that problem.
 
 ### 3.PCA Principal Component Analysis
 
@@ -86,7 +86,7 @@ vectProportionOfVariance <- pcaNAm2$sdev^2/sum(pcaNAm2$sdev^2)
 
 It is better to use scale = FALSE by convention because we get a better representation of the percentage of explained values. As we work on genes and every component are composed of $1$ and $0$, vectors are already normed.
 
-We notice that we get only 494 principal components instead of approximately 5000 which correspond to the number of genes. This can be explained because the PCA make linear combinaison to turn $5000$ components to $494$.
+We notice that we get only 494 principal components instead of approximately 5000 which correspond to the number of genes. This can be explained because the PCA make linear combinaisons to turn $5000$ components to $494$.
 
 #### c)
 
@@ -118,7 +118,7 @@ legend("topright",legend=names,col=colPalette,lty=-
 
 The Ache population is well identified by both components. The Surui can also be identified by both components but more especially by the PC1.
 
-The Karitiana population is well identified by the PC5. The Pima population is well identified by the PC6.
+The Karitiana population is well identified by the PC5 and the Pima population is well identified by the PC6.
 
 #### d)
 
@@ -136,7 +136,7 @@ According to what we have seen until now, we have two ideas.
 
 The first idea is that we have seen that we can distinguish two population using two principal components. Therefore, as there are 27 different populations, we could deduce that we would need 14 pairs of principal components. 
 
-However, we can ask ourselves if we can really each time distinguish two different populations using two principal components. It might not be the case because we have just tested it with two pairs of principal components. Thus, we could think about an alternative way, which is adding the variance of the first principal components until the sum is equal to a certain level. This level could be 25% or 50%. This last one means using a lot of principal components. 
+However, we can ask ourselves if we can really each time distinguish two different populations using two principal components. It might not be the case because we have just tested it with two pairs of principal components. Thus, we could think about an alternative way, which is to add the variance of the first principal components until the sum is equal to a certain level. This level could be 25% or 50%. This last one means using a lot of principal components. 
 
 ```{r}
 
@@ -201,7 +201,7 @@ library(maps);map("world",add=T)
 
 ```
 
-If we compare it to the map from the question 1, we can clearly say that this map represent very optimistically places where population live. It looks quite messy if we just take a look around Panama. However if we examine the estimated places of the Chipewyan, Cree, Ojibwa, Pima and Huiliche populations, we can very distinctly see that the estimation is pretty accurate.
+If we compare it to the map from the question 1, we can clearly say that this map represent very optimistically places where populations live. It looks quite messy if we just take a look around Panama. However, if we examine the estimated places of the Chipewyan, Cree, Ojibwa, Pima and Huiliche populations, we can very distinctly see that the estimation is pretty accurate.
 
 #### b) 
 
@@ -219,10 +219,10 @@ stock <- c()
 
 tmpIndex <- 0
 for (i in 1:npop) {
-  # vector long estimated for population n°i
+  # vector long estimated for population n??i
   tmpLong <- lmlong$fitted.values[which(NAm2[,3]==names[i])]
   
-  # vector lat estimated for population n°i
+  # vector lat estimated for population n??i
   tmpLat <- lmlat$fitted.values[which(NAm2[,3]==names[i])]
   
   # matrix of the estimated positions
@@ -235,14 +235,14 @@ for (i in 1:npop) {
   
   diff <- rdist.earth(x1 = theoryPosition[tmpIndex:(tmpIndex+len), ], x2 = estimatedPosition, miles = F)[1, ]
   
-  # stock the mean of distance from the theorical position in kilometers
+  # stock the mean of distance from the theoretical position in kilometers
   stock[i] <- mean(diff)
   
   tmpIndex <- tmpIndex + len
 }
 
 plot(c(1:npop), stock, main = "Mean difference in kilometers between theoretical and estimated positions",
-     xlab = "N° associated to the population", 
+     xlab = "N?? associated to the population", 
      ylab = "Mean of the distance in kilometers")
 linearTest <- lm(stock ~ c(1:npop))
 abline(linearTest)
@@ -250,14 +250,14 @@ abline(linearTest)
 
 ```
 
-Thanks to the previous graph, we can say that the estimated positions are on average approximately $1100$ kilometers away from the theorical position. It might seem a lot at first sight because it sounds huge if we just have a human sensible approach. Nonetheless it is not really a lot in reality if we size to the scale of the earth. Indeed, we could just think about the fact that the earth's circonference is equal to $40075$ kilometers. If we draw a circle around the theorical position for each population, on average, the estimation of the position will be contained inside the circle.    
+Thanks to the previous graph, we can say that the estimated positions are on average approximately $1100$ kilometers away from the theoretical positions. It might seem a lot at first sight because it sounds huge if we just have a human sensible approach. Nonetheless, it is not really a lot in reality if we size to the scale of the earth. Indeed, we could just think about the fact that the earth's circonference is equal to $40075$ kilometers. If we draw a circle around the theoretical position for each population, on average, the estimation of the position will be contained inside the circle.    
 
 
 ### 5) PCR and Cross-Validation
 
 #### a)
 
-Cross-Validation is a technique used in model selection to better estimate the test error of a predictive model. The principle of K-fold cross validation method is to divide randomly the data into K subsets where K-1 subsets are used as the training sets and the remaining subset is used as a validation subset to compute a prediction error. We repeat this procedure K times by considering each subset as the validation subset and the others subsets as the training sets. The procedure is finished when each subset has been used once as the validation subset. The K results from the folds can then be averaged to produce a single estimation.
+Cross-Validation is a technique used in model selection to better estimate the test error of a predictive model. The principle of K-fold cross validation method is to divide randomly the data into K subsets where K-1 subsets are used as the training sets and the remaining subset is used as a validation subset to compute a prediction error. We repeat this procedure K times by considering each subset as the validation subset and the other subsets as the training sets. The procedure is finished when each subset has been used once as the validation subset. The K results from the folds can then be averaged to produce a single estimation.
 
 The advantage of this method is that all observations are used for both training and validation, and each observation is used for validation exactly once.
 
@@ -265,7 +265,7 @@ The advantage of this method is that all observations are used for both training
 
 labels <- rep(1:10, each=10)
 set <- sample(labels, 494, replace = TRUE)
-set
+
 
 ```
 
@@ -311,7 +311,7 @@ for (indice in 1:494) {
 
 ```
 
-We predict only the coordinates where the ligns are equals to 1 in the set.
+We predict only the coordinates where the lines are equals to 1 in the set.
 
 ```{r}
 
@@ -349,7 +349,7 @@ data.frame(predictedCoord)
 data.frame(theoryPosition)
 
 ```
-We can clearly see that, even when we change naxes, we have the predictedCoord that make sense compared to the theoryPosition.
+We can clearly see that, even when we change naxes, we have the predictedCoord that makes sense compared to the theoryPosition.
 
 ```{r}
 
@@ -396,7 +396,7 @@ stock <- main_vect
 #stock
 
 plot(c(1:npop), stock, main = "Mean difference in kilometers between theoretical and estimated positions",
-     xlab = "N° associated to the population", 
+     xlab = "N?? associated to the population", 
      ylab = "Mean of the distance in kilometers")
 linearTest <- lm(stock ~ c(1:npop))
 abline(linearTest)
@@ -404,7 +404,7 @@ abline(linearTest)
 
 ```
 
-Here we can see that by using the $4$ first PCA, we have a $2000$ kilometers difference. We expect that as we increase the number of PCA used, the model is better and predict more precisely the theorical coordinates
+Here we can see that by using the $4$ first principal components, we have a $2000$ kilometers difference. We expect that as we increase the number of principal components used, the model is better and predict more precisely the theoretical coordinates.
 
 #### c)
 
@@ -455,16 +455,24 @@ for (naxes in seq(4,440, by = 10)){
 }
 
 
-plot(c(1:(index-1)), mean_final, main = "Mean difference in kilometers between theoretical and estimated positions",xlab = "N° of PCs used divided by 10", ylab = "Mean of the distance in kilometers", type = "l")
+plot(c(1:(index-1)), mean_final, main = "Mean difference in kilometers between theoretical and estimated positions",xlab = "N?? of PCs used divided by 10", ylab = "Mean of the distance in kilometers", type = "l")
 
 ```
 
-As we can see, the final graph shows that as we increase the number of PCs used for the regression at the beginning the difference of distance decrease. This is quiet expected because we have more information to describe the model. However, when the number of PCs used is too large it increases the difference : this is caused by overfitting. There is the limit where the model explains the errors that we don't want the model to explain. If we compare to the result obtained in the answer 4.b, we can see in abscissa $25$ that we have a difference of distance equal to $1400$. This result is really close to what we have found before $1100$.
+As we can see, the final graph shows that as we increase the number of principal components used for the regression at the beginning, the difference of distance decreases. This is quiet expected because we have more information to describe the model. However, when the number of principal components used is too large, it increases the difference : this is caused by overfitting. There is the limit where the model explains the errors that we do not want the model to explain. If we compare to the result obtained in the answer 4.b, we can see in abscissa $25$ that we have a difference of distance equal to $1400$. This result is really close to what we have found before $1100$.
 
-According to this graph, we should use the first $80$ principals components to get the best prediction because this is approximately the minimum of the curve. This is the model we would keep.
+According to this graph, we should use the first $80$ principal components to get the best prediction because this is approximately the minimum of the curve. This is the model we would keep.
 
 ### 6) Conclusion
 
+The idea of principal components regression (PCR) is to calculate the principal components and then use some of these components as predictors in a linear regression model fitted using the typical least squares procedure.
 
+By using PCR we can easily perform dimensionality reduction on a high dimensional dataset and then fit a linear regression model to a smaller set of variables, while at the same time keep most of the variability of the original predictors. 
 
+Since the use of only some of the principal components reduces the number of variables in the model, this can help in reducing the model complexity, which is always a plus. In case we need many principal components to explain most of the variability in our data, say roughly as many principal components as the number of variables in our dataset, then PCR might not perform that well in that scenario. PCR tends to perform well when the first principal components are enough to explain most of the variation in the predictors.
 
+Thus, PCR is a good approach with this study because previously we have seen that by using the first 80 principal components, we had the best way to predict the geographical origin of an individual. Then, the number of principal components is not high against the number of variables in our dataset.
+
+Moreover, we have seen through this work that more we increase the number of principal components, more the model is better and predict more precisely the theoretical coordinates.
+
+In this study, all the variables are genes, maybe with a study where variables do not represent the same thing, the PCR could be not enough well. For example, if there is multicollinearity between variables, that could be a problem.
