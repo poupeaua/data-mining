@@ -61,7 +61,7 @@ All values are NA (Not Available) because we have too much predictors (more than
 
 #### a) 
 
-The main goal of the PCA is to reduce the number of predictors. In order to achieve that, we have to extract the most important components of the geneticData set. These new variables are a linear combinaison of the original ones. The number of principal components is smaller than the number of original variables. The aim is to maximize the variation of the geneticData set.
+PCA is a multivariate statistical technique, the main goal of this method is to reduce the number of predictors. In order to achieve that, we have to extract the important information from the geneticData set. These new variables are linear combinaisons of the original ones. The number of principal components is smaller than the number of original variables. The aim is to maximize the variation of the geneticData set.
 
 #### b)
 
@@ -272,7 +272,7 @@ set <- sample(labels, 494, replace = TRUE)
 #### b)
 
 ```{r}
-# we define naxes to 4 as a variable so that it will be easier to make the final algorithme
+# we define naxes to 4 as a variable so that it will be easier to make the final algorithm
 naxes <- 4
 predictedCoord <- matrix(data = NA, nrow = 494, ncol = 2)
 
@@ -349,6 +349,7 @@ data.frame(predictedCoord)
 data.frame(theoryPosition)
 
 ```
+
 We can clearly see that, even when we change naxes, we have the predictedCoord that makes sense compared to the theoryPosition.
 
 ```{r}
@@ -408,8 +409,6 @@ Here we can see that by using the $4$ first principal components, we have a $200
 
 #### c)
 
-N
-
 ```{r}
 
 mean_final <- c(1:44)
@@ -462,6 +461,7 @@ plot(c(1:(index-1)), mean_final, main = "Mean difference in kilometers between t
 As we can see, the final graph shows that as we increase the number of principal components used for the regression at the beginning, the difference of distance decreases. This is quiet expected because we have more information to describe the model. However, when the number of principal components used is too large, it increases the difference : this is caused by overfitting. There is the limit where the model explains the errors that we do not want the model to explain. If we compare to the result obtained in the answer 4.b, we can see in abscissa $25$ that we have a difference of distance equal to $1400$. This result is really close to what we have found before $1100$.
 
 According to this graph, we should use the first $80$ principal components to get the best prediction because this is approximately the minimum of the curve. This is the model we would keep.
+
 
 ### 6) Conclusion
 
