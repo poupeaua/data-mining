@@ -16,7 +16,7 @@ cont <- function(x)
   cont<-"SouthAmerica"
   return (factor(cont))
 }
-contID <- data.frame(sapply(as.character(NAm2[,4]),FUN=cont))
+contID <- sapply(as.character(NAm2[,4]),FUN=cont)
 
 library("class")
 library("MASS")
@@ -32,9 +32,86 @@ labels <- rep (1:2, each = 494/2)
 set = sample(labels, 494)
 
 # continent + genetic markers
-NAcont<-cbind(contID=contID,NAm2[,-(1:8)])
+NAcont <- cbind(contID=contID,NAm2[,-(1:8)])
 
-NAcont[,1]<-factor(NAcont[,1])
+NAcont[,1] <- factor(NAcont[,1])
+
+# we make our training phase using the elements which have its set value equal 1.
+lda(contID ~ . , data = NAcont[, 1:1001], subset = (set == 1))
+
 
 ```
+
+#### b)
+
+```{r}
+
+withinvar <- apply(NAcont[(set==1),-1],FUN=function(x){tapply(x,NAcont[(set==1),1],FUN=var)},MARGIN=2)
+
+bool <- as.logical(apply(withinvar,FUN=function(x){prod(x!=0)},MARGIN=2))
+
+NAcont2 <- cbind(contID=contID,(NAm2[,-(1:8)])[,bool])
+
+NAcont2[,1]<-factor(NAcont[,1])
+
+classModel <- lda(contID ~ . , data = subset(NAcont2, set == 1))
+
+#classModel
+```
+
+There are $3136$ genetic markers instead of $5717$ remaining after removing those which variance is equal to zero. 
+
+#### c)
+
+```{r}
+
+# Here we make our test phase using the elements which have its set value equal 2.
+prediction <- predict(classModel, newdata = subset(NAcont2, set == 2))
+#prediction$class
+
+```
+
+#### d)
+
+```{r}
+
+confusionMatrix <- table(subset(contID, set == 2), prediction$class)
+confusionMatrix
+barplot(confusionMatrix, col=c("bisque", "bisque3", "bisque4"))
+legend("topleft", legend=c("NorthAmerica", "CentralAmerica", "SouthAmerica"), fill=c("bisque", "bisque3", "bisque4"))
+
+```
+
+We can interpret that we predicted 25 people to be in South America whereas they live in Central America. This is where we have the biggest mistake. We predict well 131 to live in South America.
+
+
+#### e)
+
+```{r}
+
+sum <- 0
+for (i in 1:nrow(confusionMatrix)) {
+  for (j in 1:ncol(confusionMatrix)) {
+    if (i != j) {
+      sum <- sum + confusionMatrix[i, j]
+    }
+  }
+}
+
+sprintf("The rate of misclassified individuals is equal to %s %%", sum/(length(NAcont)/2)*100)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
