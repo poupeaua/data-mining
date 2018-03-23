@@ -42,6 +42,9 @@ lda(contID ~ . , data = NAcont[, 1:1001], subset = (set == 1))
 
 ```
 
+Here, lda does not work because there are genetic markers with a variance of 0 so the intra_group covariance matrix is non-reversing (determinant=0) and R cannot solve it. Actually, collinear variables should be removed.
+
+
 #### b)
 
 ```{r}
@@ -82,7 +85,7 @@ legend("topleft", legend=c("NorthAmerica", "CentralAmerica", "SouthAmerica"), fi
 
 ```
 
-We can interpret that we predicted 25 people to be in South America whereas they live in Central America. This is where we have the biggest mistake. We predict well 131 to live in South America.
+With this barplot, we can see for instance that we predicted that 1 person is North American instead of South American. Moreover, we predicted that 38 people are South American instead of Central American, this the highest error. In the other cases, the rate of error is weak in comparison to what it has been well predicted.
 
 
 #### e)
@@ -98,13 +101,18 @@ for (i in 1:nrow(confusionMatrix)) {
   }
 }
 
-sprintf("The rate of misclassified individuals is equal to %s %%", sum/(length(NAcont)/2)*100)
+sprintf("The rate of misclassified individuals is equal to %s .", sum/(length(NAcont)/2))
 
 ```
 
+The classification error is equal to about 2.1% .
 
 
+#### f)
 
+```{r}
+
+```
 
 
 
