@@ -39,10 +39,9 @@ NAcont[,1] <- factor(NAcont[,1])
 # we make our training phase using the elements which have its set value equal 1.
 lda(contID ~ . , data = NAcont[, 1:1001], subset = (set == 1))
 
-
 ```
 
-Here, lda does not work because there are genetic markers with a variance of 0 so the intra_group covariance matrix is non-reversing (determinant=0) and R cannot solve it. Actually, collinear variables should be removed.
+Here, lda does not work because there are genetic markers with a variance of 0 so the intra_group covariance matrix is non-reversing and R cannot solve it. Actually, collinear variables should be removed.
 
 
 #### b)
