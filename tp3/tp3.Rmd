@@ -1,7 +1,14 @@
 ---
 title: "Multidimensional Statistical Analysis"
-output: html_notebook
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
 ---
+
+Lamyaa BOUZBIBA
+Alexandre POUPEAU
+Eloise JULIEN
 
 ```{r}
 NAm2 = read.table("NAm2.txt", header = TRUE)
@@ -42,7 +49,7 @@ lda(contID ~ . , data = NAcont[, 1:1001], subset = (set == 1))
 
 ```
 
-Here, lda does not work because there are genetic markers with a variance of 0 so the intra_group covariance matrix is non-reversing (determinant=0) and R cannot solve it. Actually, collinear variables should be removed.
+Here, lda does not work because there are genetic markers with a variance of 0 so the intra_group covariance matrix is non-reversing and R cannot solve it. Actually, collinear variables should be removed.
 
 
 #### b)
@@ -62,9 +69,11 @@ classModel <- lda(contID ~ . , data = subset(NAcont2, set == 1))
 #classModel
 ```
 
-There are $3136$ genetic markers instead of $5717$ remaining after removing those which variance is equal to zero. 
+Instead of $5717$, there are $3136$ genetic markers remaining after removing those which variance is equal to zero. 
 
 #### c)
+
+Now we predict the original populations of individuals who have not been trained.
 
 ```{r}
 
@@ -85,37 +94,66 @@ legend("topleft", legend=c("NorthAmerica", "CentralAmerica", "SouthAmerica"), fi
 
 ```
 
-With this barplot, we can see for instance that we predicted that 1 person is North American instead of South American. Moreover, we predicted that 38 people are South American instead of Central American, this the highest error. In the other cases, the rate of error is weak in comparison to what it has been well predicted.
+With this barplot, we can see for instance that we predicted that 1 person is North American instead of South American. Moreover, we predicted that 55 people are South American instead of Central American, this the highest error.
 
 
 #### e)
 
 ```{r}
 
-sum <- 0
-for (i in 1:nrow(confusionMatrix)) {
-  for (j in 1:ncol(confusionMatrix)) {
-    if (i != j) {
-      sum <- sum + confusionMatrix[i, j]
-    }
-  }
-}
+rate <- 1-((sum(diag(confusionMatrix)))/sum(confusionMatrix))
 
-sprintf("The rate of misclassified individuals is equal to %s .", sum/(length(NAcont)/2))
+sprintf("The rate of misclassified individuals is equal to %s .", rate)
+
 
 ```
 
-The classification error is equal to about 2.1% .
+The classification error is equal to about 30% .
 
 
 #### f)
 
+A possible improvement to the method implemented in the previous question could be the 13-fold cross-validation. So, we will divide randomly the data into 13 subsets where 12 subsets are used as the training sets and the remaining subset is used as a validation subset to compute a prediction error. We repeat this procedure ten times by considering each subset as the validation subset and the other subsets as the training sets.
+
+
 ```{r}
+
+labels <- rep(1:13, each=13)
+set = sample(labels, 494, replace=TRUE)
+
+NAcont <- cbind(contID=contID,NAm2[,-(1:8)])
+
+NAcont[,1] <- factor(NAcont[,1])
+
+rate <- c(1:13)
+
+for (i in 1:13){
+  
+  withinvar <- apply(NAcont[(set==i),-1],FUN=function(x){tapply(x,NAcont[(set==i),1],FUN=var)},MARGIN=2)
+
+  bool <- as.logical(apply(withinvar,FUN=function(x){prod(x!=0)},MARGIN=2))
+
+  NAcont2 <- cbind(contID=contID,(NAm2[,-(1:8)])[,bool])
+
+  NAcont2[,1]<-factor(NAcont[,1])
+
+  classModel <- lda(contID ~ . , data = subset(NAcont2, set != i))
+  
+  prediction <- predict(classModel, newdata = subset(NAcont2, set == i))
+  
+  confusionMatrix <- table(subset(contID, set == i), prediction$class)
+
+  rate[i] <- 1-((sum(diag(confusionMatrix)))/sum(confusionMatrix))
+  
+}
+
+sprintf("The rate of misclassified individuals is equal to %s .", mean(rate))
 
 ```
 
+With the 13-fold cross validation, the classification error is equal to about 18% .
 
-
+To conclude, this cross validation is a good improvement to the method implemented in the previous question. Indeed, the classification error is equal to about 18% against 30% previously. 
 
 
 
