@@ -1,0 +1,29 @@
+---
+title: "Document Classification with Generative Naive-Bayes Models"
+output: html_notebook
+---
+
+Poupeau Alexandre
+Julien Eloise
+Bouzbiba Lamyaa
+
+# Document Classification with Generative Naive-Bayes Models
+
+## 1) 
+
+All the commentaries are in the code of the file readData.py.
+
+## 2) 
+
+The dimension of the problem is 141144. 
+
+The number of documents per class is in the following:
+[5894, 1003, 2472, 2207, 6010, 2992, 1586, 1226, 2007, 3982, 7757, 3644, 3405, 2307, 1040, 1460, 1191, 1733, 4745, 1411, 1016, 3018, 1050, 1184, 1624, 1296, 1018, 1049, 1376]
+
+## 4)
+
+Cross-Validation is a technique used in model selection to better estimate the test error of a predictive model. The principle of K-fold cross validation method is to divide randomly the data into K subsets where K-1 subsets are used as the training sets and the remaining subset is used as a validation subset to compute a prediction error. 
+We repeat this procedure K times by considering each subset as the validation subset and the other subsets as the training sets. The procedure is finished when each subset has been used once as the validation subset. The K results from the folds can then be averaged to produce a single estimation.
+
+The advantage of this method is that all observations are used for both training and validation, and each observation is used for validation exactly once.
+
