@@ -5,7 +5,7 @@ import sys
 # from random import randint
 import numpy as np
 from scipy import sparse
-from sklearn.model_selection import train_test_split, KFold
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import BernoulliNB, MultinomialNB
 
 f=open("BaseReuters-29")
@@ -88,18 +88,29 @@ misclassified_rate_multinomial /= len(test_lab)
 print("Rate of errors using the Multinomial model : ", misclassified_rate_multinomial*100)
 
 
-#  4) Cross-validation for bernoulli_model
+#  4) Cross-validation 
 
 training_set1, test_set1, training_lab1, test_lab1 = train_test_split(reuters, all_lab, train_size = 56562 , test_size = 14141)
 training_set2, test_set2, training_lab2, test_lab2 = train_test_split(training_set1, training_lab1, train_size = 42421 , test_size = 14141)
 training_set3, test_set3, training_lab3, test_lab3 = train_test_split(training_set2, training_lab2, train_size = 28280 , test_size = 14141)
 training_set4, test_set4, training_lab4, test_lab4 = train_test_split(training_set3, training_lab3, train_size = 14140 , test_size = 14140)
 
-train_sets=[]	#il faut stocker ici training_set1, training_set2, training_set3 et training_set4
-train_lab=[]	#il faut stocker ici training_lab1, training_lab2, training_lab3 et training_lab4
-test_sets=[]	#il faut stocker ici test_set1, test_set2, test_set3 et test_set4
+train_sets=[]	#faut trouver une structure de données pour y stocker training_set1, training_set2, training_set3 et training_set4
+train_labs=[]	#faut trouver une structure de données pour y stocker ici training_lab1, training_lab2, training_lab3 et training_lab4
+test_sets=[]	#faut trouver une structure de données pour y stocker ici test_set1, test_set2, test_set3 et test_set4
+
+
+# Bernoulli_model
 
 for i in range(5):
 	bernoulli_model = BernoulliNB(alpha=1.0, binarize=0.0, class_prior=None, fit_prior=True)
-	bernoulli_model.fit(train_sets[i], train_lab[i])
+	bernoulli_model.fit(train_sets[i], train_labs[i])
 	predict_bernoulli = bernoulli_model.predict(test_sets[i])
+
+
+# Multinomial_model
+
+for i in range(5):
+    multinomial_model = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+    multinomial_model.fit(train_sets[i], train_labs[i])
+    predict_multinomial = multinomial_model.predict(test_sets[i])
