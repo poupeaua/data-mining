@@ -1,0 +1,98 @@
+---
+title: "Multidimensional Statistical Analysis"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+Lamyaa BOUZBIBA
+Alexandre POUPEAU
+Eloise JULIEN
+
+## 1 - Import and Pre-processing
+
+### 1)
+
+```{r}
+NAm2 = read.table("NAm2.txt", header = TRUE)
+
+# extract the three population needed for the rest of the work
+communities <- subset(NAm2, Pop == c("Chipewyan", "Huilliche", "Pima"))
+
+# extract all the genes column 9 => ...
+genes <- data.frame(communities[,-(1:8)])
+
+```
+
+### 2)
+
+```{r}
+
+# create a temporary matrix
+tmpMat <- data.matrix(genes)
+
+# adjacency 
+adjacencyMat = tmpMat%*%t(tmpMat)
+
+# every diagonal is composed of the sum of all the genetic markers 1 for each person
+diag(adjacencyMat) = 0
+
+```
+
+### 3)
+
+```{r}
+
+# Phase 1 : replace some elements to 0
+# seventh decile is equal to
+seventh <- quantile(adjacencyMat, prob = 0.7)
+
+# remove the element if its value if inferior to the threshold 
+adjacencyMat <- ifelse(adjacencyMat<seventh, 0, adjacencyMat)
+
+# Phase 2 : remove some rows / columns
+
+# version 1
+#rowsToDelete <- c(F, 1:nrow(adjacencyMat))
+#rowsToDelete
+#for (i in 1:nrow(adjacencyMat)) {
+#  row_i <- adjacencyMat[i, ]
+#  element <- row_i[row_i != 0]
+#  if (length(element) > 1) {
+#    rowsToDelete[i] <- T
+#  }
+#}
+
+# remove rows and columns version 2
+adj_bin <- adjacencyMat
+adj_bin[adj_bin > 0] = 1
+idx <- which(colSums(adj_bin) <= 1)
+adjacencyMat = adjacencyMat[-idx, -idx]
+
+```
+
+## 2) Characterization of the Graph
+
+### 4)
+
+```{r}
+
+library("igraph")
+
+```
+
+### 5) 
+
+```{r}
+
+# 
+adjacencyMat2 <- graph.adjacency(adjacencyMat, mode = "undirected", weighted = T)
+
+#
+l <- layout.fruchterman.reingold((adjacencyMat2))
+
+plot(adjacencyMat2, vertex.label = NA, layout = l, vertex.size = 5)
+
+```
+
