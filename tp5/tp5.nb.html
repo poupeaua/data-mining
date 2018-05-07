@@ -175,51 +175,58 @@ $(document).ready(function () {
 <p>Lamyaa BOUZBIBA Alexandre POUPEAU Eloise JULIEN</p>
 <div id="import-and-pre-processing" class="section level2">
 <h2>1 - Import and Pre-processing</h2>
-<div id="section" class="section level3">
-<h3>1)</h3>
+<div id="section" class="section level4">
+<h4>1)</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFtMiA9IHJlYWQudGFibGUoXCJOQW0yLnR4dFwiLCBoZWFkZXIgPSBUUlVFKVxuIyBleHRyYWN0IHRoZSB0aHJlZSBwb3B1bGF0aW9uIG5lZWRlZCBmb3IgdGhlIHJlc3Qgb2YgdGhlIHdvcmtcbmNvbW11bml0aWVzIDwtIHN1YnNldChOQW0yLCBQb3AgPT0gYyhcIkNoaXBld3lhblwiLCBcIkh1aWxsaWNoZVwiLCBcIlBpbWFcIikpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFtMiA9IHJlYWQudGFibGUoXCJOQW0yLnR4dFwiLCBoZWFkZXIgPSBUUlVFKVxuXG4jIGV4dHJhY3QgdGhlIHRocmVlIHBvcHVsYXRpb24gbmVlZGVkIGZvciB0aGUgcmVzdCBvZiB0aGUgd29ya1xuY29tbXVuaXRpZXMgPC0gc3Vic2V0KE5BbTIsIFBvcCA9PSBcIkNoaXBld3lhblwiIHwgUG9wID09IFwiSHVpbGxpY2hlXCIgfCBQb3AgPT0gXCJQaW1hXCIpXG5cbiMgZXh0cmFjdCBhbGwgdGhlIGdlbmVzIGNvbHVtbiA5ID0+IC4uLlxuZ2VuZXMgPC0gZGF0YS5mcmFtZShjb21tdW5pdGllc1ssLSgxOjgpXSlcblxuYGBgIn0= -->
 <pre class="r"><code>NAm2 = read.table(&quot;NAm2.txt&quot;, header = TRUE)
+
 # extract the three population needed for the rest of the work
-communities &lt;- subset(NAm2, Pop == c(&quot;Chipewyan&quot;, &quot;Huilliche&quot;, &quot;Pima&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoibG9uZ2VyIG9iamVjdCBsZW5ndGggaXMgbm90IGEgbXVsdGlwbGUgb2Ygc2hvcnRlciBvYmplY3QgbGVuZ3RobG9uZ2VyIG9iamVjdCBsZW5ndGggaXMgbm90IGEgbXVsdGlwbGUgb2Ygc2hvcnRlciBvYmplY3QgbGVuZ3RoXG4ifQ== -->
-<pre><code>longer object length is not a multiple of shorter object lengthlonger object length is not a multiple of shorter object length</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBleHRyYWN0IGFsbCB0aGUgZ2VuZXMgY29sdW1uIDkgPT4gLi4uXG5nZW5lcyA8LSBkYXRhLmZyYW1lKGNvbW11bml0aWVzWywtKDE6OCldKVxuYGBgIn0= -->
-<pre class="r"><code># extract all the genes column 9 =&gt; ...
-genes &lt;- data.frame(communities[,-(1:8)])</code></pre>
+communities &lt;- subset(NAm2, Pop == &quot;Chipewyan&quot; | Pop == &quot;Huilliche&quot; | Pop == &quot;Pima&quot;)
+
+# extract all the genes column 9 =&gt; ...
+genes &lt;- data.frame(communities[,-(1:8)])
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="section-1" class="section level3">
-<h3>2)</h3>
+<div id="section-1" class="section level4">
+<h4>2)</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjcmVhdGUgYSB0ZW1wb3JhcnkgbWF0cml4XG50bXBNYXQgPC0gZGF0YS5tYXRyaXgoZ2VuZXMpXG4jIGFkamFjZW5jeSBcbmFkamFjZW5jeU1hdCA9IHRtcE1hdCUqJXQodG1wTWF0KVxuIyBldmVyeSBkaWFnb25hbCBpcyBjb21wb3NlZCBvZiB0aGUgc3VtIG9mIGFsbCB0aGUgZ2VuZXRpYyBtYXJrZXJzIDEgZm9yIGVhY2ggcGVyc29uXG5kaWFnKGFkamFjZW5jeU1hdCkgPSAwXG5gYGAifQ== -->
-<pre class="r"><code># create a temporary matrix
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGNyZWF0ZSBhIHRlbXBvcmFyeSBtYXRyaXhcbnRtcE1hdCA8LSBkYXRhLm1hdHJpeChnZW5lcylcblxuIyBhZGphY2VuY3kgXG5hZGphY2VuY3lNYXQgPSB0bXBNYXQlKiV0KHRtcE1hdClcblxuIyBldmVyeSBkaWFnb25hbCBpcyBjb21wb3NlZCBvZiB0aGUgc3VtIG9mIGFsbCB0aGUgZ2VuZXRpYyBtYXJrZXJzIDEgZm9yIGVhY2ggcGVyc29uXG5kaWFnKGFkamFjZW5jeU1hdCkgPSAwXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# create a temporary matrix
 tmpMat &lt;- data.matrix(genes)
+
 # adjacency 
 adjacencyMat = tmpMat%*%t(tmpMat)
+
 # every diagonal is composed of the sum of all the genetic markers 1 for each person
-diag(adjacencyMat) = 0</code></pre>
+diag(adjacencyMat) = 0
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="section-2" class="section level3">
-<h3>3)</h3>
+<div id="section-2" class="section level4">
+<h4>3)</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBQaGFzZSAxIDogcmVwbGFjZSBzb21lIGVsZW1lbnRzIHRvIDBcbiMgc2V2ZW50aCBkZWNpbGUgaXMgZXF1YWwgdG9cbnNldmVudGggPC0gcXVhbnRpbGUoYWRqYWNlbmN5TWF0LCBwcm9iID0gMC43KVxuIyByZW1vdmUgdGhlIGVsZW1lbnQgaWYgaXRzIHZhbHVlIGlmIGluZmVyaW9yIHRvIHRoZSB0aHJlc2hvbGQgXG5hZGphY2VuY3lNYXQgPC0gaWZlbHNlKGFkamFjZW5jeU1hdDxzZXZlbnRoLCAwLCBhZGphY2VuY3lNYXQpXG4jIFBoYXNlIDIgOiByZW1vdmUgc29tZSByb3dzIC8gY29sdW1uc1xuI3Jvd3NUb0RlbGV0ZSA8LSBjKEYsIDE6bnJvdyhhZGphY2VuY3lNYXQpKVxuI3Jvd3NUb0RlbGV0ZVxuI2ZvciAoaSBpbiAxOm5yb3coYWRqYWNlbmN5TWF0KSkge1xuIyAgcm93X2kgPC0gYWRqYWNlbmN5TWF0W2ksIF1cbiMgIGVsZW1lbnQgPC0gcm93X2lbcm93X2kgIT0gMF1cbiMgIGlmIChsZW5ndGgoZWxlbWVudCkgPiAxKSB7XG4jICAgIHJvd3NUb0RlbGV0ZVtpXSA8LSBUXG4jICB9XG4jfVxuYWRqX2JpbiA8LSBhZGphY2VuY3lNYXRcbmFkal9iaW5bYWRqX2JpbiA+IDBdID0gMVxuaWR4IDwtIHdoaWNoKGNvbFN1bXMoYWRqX2JpbikgPD0gMSlcbmFkamFjZW5jeU1hdCA9IGFkamFjZW5jeU1hdFstaWR4LCAtaWR4XVxuYGBgIn0= -->
-<pre class="r"><code># Phase 1 : replace some elements to 0
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIFBoYXNlIDEgOiByZXBsYWNlIHNvbWUgZWxlbWVudHMgdG8gMFxuIyBzZXZlbnRoIGRlY2lsZSBpcyBlcXVhbCB0b1xuc2V2ZW50aCA8LSBxdWFudGlsZShhZGphY2VuY3lNYXQsIHByb2IgPSAwLjcpXG5cbiMgcmVtb3ZlIHRoZSBlbGVtZW50IGlmIGl0cyB2YWx1ZSBpZiBpbmZlcmlvciB0byB0aGUgdGhyZXNob2xkIFxuYWRqYWNlbmN5TWF0W2FkamFjZW5jeU1hdDxzZXZlbnRoXSA9IDBcblxuIyBQaGFzZSAyIDogcmVtb3ZlIHNvbWUgcm93cyAvIGNvbHVtbnNcblxuIyB2ZXJzaW9uIDFcbiNyb3dzVG9EZWxldGUgPC0gYyhGLCAxOm5yb3coYWRqYWNlbmN5TWF0KSlcbiNyb3dzVG9EZWxldGVcbiNmb3IgKGkgaW4gMTpucm93KGFkamFjZW5jeU1hdCkpIHtcbiMgIHJvd19pIDwtIGFkamFjZW5jeU1hdFtpLCBdXG4jICBlbGVtZW50IDwtIHJvd19pW3Jvd19pICE9IDBdXG4jICBpZiAobGVuZ3RoKGVsZW1lbnQpID4gMSkge1xuIyAgICByb3dzVG9EZWxldGVbaV0gPC0gVFxuIyAgfVxuI31cblxuIyByZW1vdmUgcm93cyBhbmQgY29sdW1ucyB2ZXJzaW9uIDJcbmFkal9iaW4gPC0gYWRqYWNlbmN5TWF0XG5hZGpfYmluW2Fkal9iaW4gPiAwXSA9IDFcbmlkeCA8LSB3aGljaChjb2xTdW1zKGFkal9iaW4pIDw9IDEpXG5hZGphY2VuY3lNYXQgPSBhZGphY2VuY3lNYXRbLWlkeCwgLWlkeF1cblxuYGBgIn0= -->
+<pre class="r"><code>
+# Phase 1 : replace some elements to 0
 # seventh decile is equal to
 seventh &lt;- quantile(adjacencyMat, prob = 0.7)
+
 # remove the element if its value if inferior to the threshold 
-adjacencyMat &lt;- ifelse(adjacencyMat&lt;seventh, 0, adjacencyMat)
+adjacencyMat[adjacencyMat&lt;seventh] = 0
+
 # Phase 2 : remove some rows / columns
+
+# version 1
 #rowsToDelete &lt;- c(F, 1:nrow(adjacencyMat))
 #rowsToDelete
 #for (i in 1:nrow(adjacencyMat)) {
@@ -229,10 +236,13 @@ adjacencyMat &lt;- ifelse(adjacencyMat&lt;seventh, 0, adjacencyMat)
 #    rowsToDelete[i] &lt;- T
 #  }
 #}
+
+# remove rows and columns version 2
 adj_bin &lt;- adjacencyMat
 adj_bin[adj_bin &gt; 0] = 1
 idx &lt;- which(colSums(adj_bin) &lt;= 1)
-adjacencyMat = adjacencyMat[-idx, -idx]</code></pre>
+adjacencyMat = adjacencyMat[-idx, -idx]
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -240,30 +250,210 @@ adjacencyMat = adjacencyMat[-idx, -idx]</code></pre>
 </div>
 <div id="characterization-of-the-graph" class="section level2">
 <h2>2) Characterization of the Graph</h2>
-<div id="section-3" class="section level3">
-<h3>4)</h3>
+<div id="and-6" class="section level4">
+<h4>4,5 and 6)</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcImlncmFwaFwiKVxuYGBgIn0= -->
-<pre class="r"><code>library(&quot;igraph&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHdlIGltcG9ydCB0aGUgbGlicmFieSB0byBoYW5kbGUgZ3JhcGhzXG5saWJyYXJ5KFwiaWdyYXBoXCIpXG5cbiMgY3JlYXRlIHRoZSBncmFwaFxuZ3JhcGggPC0gZ3JhcGguYWRqYWNlbmN5KGFkamFjZW5jeU1hdCwgbW9kZSA9IFwidW5kaXJlY3RlZFwiLCB3ZWlnaHRlZCA9IFQpXG5cblxuIyBsYXlvdXQgdXNlZCB0byBkaXNwbGF5IHRoZSBncmFwaFxubCA8LSBsYXlvdXQuZnJ1Y2h0ZXJtYW4ucmVpbmdvbGQoKGdyYXBoKSlcblxuIyBkaXNwbGF5IHRoZSBpbWFnZVxucGxvdChncmFwaCwgdmVydGV4LmxhYmVsID0gTkEsIGxheW91dCA9IGwsIHZlcnRleC5zaXplID0gNSwgXG4gICAgIG1haW4gPSBcIlJlcHJlc2VudHMgdGhlIGNvbm5lY3Rpb24gYmV0d2VlbiB0aHJlZSBncm91cHMgb2YgY2l2aWxpc2F0aW9uXCJcbiAgICAgKVxuXG5gYGAifQ== -->
+<pre class="r"><code>
+# we import the libraby to handle graphs
+library(&quot;igraph&quot;)
+
+# create the graph
+graph &lt;- graph.adjacency(adjacencyMat, mode = &quot;undirected&quot;, weighted = T)
+
+
+# layout used to display the graph
+l &lt;- layout.fruchterman.reingold((graph))
+
+# display the image
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = &quot;Represents the connection between three groups of civilisation&quot;
+     )
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="section-4" class="section level3">
-<h3>5)</h3>
+<div id="section-3" class="section level4">
+<h4>7)</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWRqYWNlbmN5TWF0MiA8LSBncmFwaC5hZGphY2VuY3koYWRqYWNlbmN5TWF0KVxuYGBgIn0= -->
-<pre class="r"><code>adjacencyMat2 &lt;- graph.adjacency(adjacencyMat)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBEaWFtZXRlciBvZiB0aGUgZ3JhcGggd2l0aG91dCB3ZWlnaHQgPSBOQVxuZGlhbWV0ZXIoZ3JhcGgpXG4jIEFub3RoZXIgd2F5IHRvIGNhbGN1bGF0ZVxubWF4KHNob3J0ZXN0LnBhdGhzKGdyYXBoKSlcbiMgUmVhbCBkaWFtZXRlciB0aGF0IHdlIGV4cGVjdFxuZGlhbWV0ZXIoZ3JhcGgsIHdlaWdodCA9IE5BKVxuXG4jIG9yZGVyIHxWfCBhbmQgc2l6ZSB8RXxcbnN1bW1hcnkoZ3JhcGgpXG5cbiMgdHdvIHdheXMgdG8gY2FsY3VsYXRlIHRoZSBhdmVyYWdlIGdlb2Rlc2ljIGRpc3RhbmNlXG5hdmVyYWdlLnBhdGgubGVuZ3RoKGdyYXBoKVxubWVhbl9kaXN0YW5jZShncmFwaClcblxuYGBgIn0= -->
+<pre class="r"><code># Diameter of the graph without weight = NA
+diameter(graph)
+# Another way to calculate
+max(shortest.paths(graph))
+# Real diameter that we expect
+diameter(graph, weight = NA)
+
+# order |V| and size |E|
+summary(graph)
+
+# two ways to calculate the average geodesic distance
+average.path.length(graph)
+mean_distance(graph)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Firstly, we have that the diameter of the graph is 3. This means that the longest geodesic distance is equal to 3. The longest path from the shortest path is 3.</p>
+<p>The order of the graph is the number of vertices which is equal to 67.</p>
+<p>The size of the graph is the number of edges which is equal to 848.</p>
+<p>The average geodesic distance of the graph is 1.704659.</p>
+</div>
+</div>
+<div id="community-detection" class="section level2">
+<h2>3) Community Detection</h2>
+<div id="hierarchical-ascendant-clustering" class="section level3">
+<h3>3.1) Hierarchical Ascendant Clustering</h3>
+<div id="section-4" class="section level4">
+<h4>8)</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGNyZWF0ZSB0aGUgSmFjYXJkIG1hdHJpeCBcbmphY2FyZE1hdCA9IHNpbWlsYXJpdHkoZ3JhcGgpXG5cbiMgY3JlYXRlIHRoZSBIQUNcbkhBQyA9IGhjbHVzdChkaXN0KGphY2FyZE1hdCkpXG5cbiMgZGlzcGxheSB0aGUgZGVuZHJvZ3JhbVxucGxvdChIQUMpXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# create the Jacard matrix 
+jacardMat = similarity(graph)
+
+# create the HAC
+HAC = hclust(dist(jacardMat))
+
+# display the dendrogram
+plot(HAC)
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGFsZ29yaXRobSB0aGF0IHNob3dzIGZvciB3aGljaCB0aGUgbnVtYmVyIG9mIGNvbW11bml0eSBmaXRzIGJlc3QgdGhlIGdyYXBoXG5tb2QgPSBjKClcbmZvciAoaSBpbiAxOjEwKSB7XG4gIGxhYiA9IGN1dHJlZShIQUMsIGkpXG4gIG1vZFtpXSA9IG1vZHVsYXJpdHkoZ3JhcGgsIGxhYilcbn1cbnBsb3QobW9kLCB0eXBlID0gXCJsXCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# algorithm that shows for which the number of community fits best the graph
+mod = c()
+for (i in 1:10) {
+  lab = cutree(HAC, i)
+  mod[i] = modularity(graph, lab)
+}
+plot(mod, type = &quot;l&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGRpc3BsYXkgdGhlIGltYWdlIGZvciBcbmxhYiA9IGN1dHJlZShIQUMsIDMpXG5WKGdyYXBoKSRjb2xvciA9IGxhYlxuIyBkaXNwbGF5IHRoZSBpbWFnZVxucGxvdChncmFwaCwgdmVydGV4LmxhYmVsID0gTkEsIGxheW91dCA9IGwsIHZlcnRleC5zaXplID0gNSwgXG4gICAgIG1haW4gPSBcIlJlcHJlc2VudHMgMyBjb21tdW5pdGllcyB1c2luZyBKYWNhcmRcIlxuICAgICApXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# display the image for 
+lab = cutree(HAC, 3)
+V(graph)$color = lab
+# display the image
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = &quot;Represents 3 communities using Jacard&quot;
+     )
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Jacard clustering method provides a good division of the communities. Almost as good as the theoretical one. There are few errors between the blue and the green communities.</p>
+</div>
+</div>
+<div id="edge-betweeness" class="section level3">
+<h3>3.2) Edge-Betweeness</h3>
+<div id="section-5" class="section level4">
+<h4>12)</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHdlIG5vdyB3YW50IHRvIGZvcm0gY2x1c3RlciB1c2luZyB0aGUgZWRnZS1iZXR3ZWVuZXNzIG1ldGhvZFxuZWIgPSBjbHVzdGVyX2VkZ2VfYmV0d2Vlbm5lc3MoZ3JhcGgpXG4jIHBsb3QoYXMuZGVuZHJvZ3JhbShlYikpXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# we now want to form cluster using the edge-betweeness method
+eb = cluster_edge_betweenness(graph)
+# plot(as.dendrogram(eb))
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="section-6" class="section level4">
+<h4>13)</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5tb2RzID0gc2FwcGx5KDA6ZWNvdW50KGdyYXBoKSwgZnVuY3Rpb24oaSl7XG4gIGcyID0gZGVsZXRlLmVkZ2VzKGdyYXBoLCBlYiRyZW1vdmVkLmVkZ2VzW3NlcShsZW5ndGg9aSldKVxuICBjbCA9IGNsdXN0ZXJzKGcyKSRtZW1iZXJzaGlwXG4gIG1vZHVsYXJpdHkoZ3JhcGgsY2wpXG4gIH0pXG5nMjwtZGVsZXRlLmVkZ2VzKGdyYXBoLCBlYiRyZW1vdmVkLmVkZ2VzW3NlcShsZW5ndGg9d2hpY2gubWF4KG1vZHMpLTEpXSlcblxuVihncmFwaCkkY29sb3I9Y2x1c3RlcnMoZzIpJG1lbWJlcnNoaXBcbnBsb3QoZ3JhcGgsIHZlcnRleC5sYWJlbCA9IE5BLCBsYXlvdXQgPSBsLCB2ZXJ0ZXguc2l6ZSA9IDUsIFxuICAgICBtYWluID0gXCJSZXByZXNlbnRzIDMgY29tbXVuaXRpZXMgdXNpbmcgRWRnZSBCZXR3ZWVuZXNzIG1ldGhvZFwiXG4gICAgIClcblxuXG5gYGAifQ== -->
+<pre class="r"><code>
+mods = sapply(0:ecount(graph), function(i){
+  g2 = delete.edges(graph, eb$removed.edges[seq(length=i)])
+  cl = clusters(g2)$membership
+  modularity(graph,cl)
+  })
+g2&lt;-delete.edges(graph, eb$removed.edges[seq(length=which.max(mods)-1)])
+
+V(graph)$color=clusters(g2)$membership
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = &quot;Represents 3 communities using Edge Betweeness method&quot;
+     )
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Edge Betweenees method provides a really bad clustering. It is mainly because it is really sensible to extreme vertices (nodes). This is why it founds not three but four communities but two have only one person which cannot be correct.</p>
+</div>
+</div>
+<div id="spectral-clustering-and-louvain" class="section level3">
+<h3>3.3) Spectral Clustering and Louvain</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5cbmViMiA9IGNsdXN0ZXJfbG91dmFpbihncmFwaClcblxuVihncmFwaCkkY29sb3I9ZWIyJG1lbWJlcnNoaXBcbnBsb3QoZ3JhcGgsIHZlcnRleC5sYWJlbCA9IE5BLCBsYXlvdXQgPSBsLCB2ZXJ0ZXguc2l6ZSA9IDUsIFxuICAgICBtYWluID0gXCJSZXByZXNlbnRzIDMgY29tbXVuaXRpZXMgdXNpbmcgTG91dmFpbiBtZXRob2RcIlxuICAgICApXG5cblxuYGBgIn0= -->
+<pre class="r"><code>
+
+eb2 = cluster_louvain(graph)
+
+V(graph)$color=eb2$membership
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = &quot;Represents 3 communities using Louvain method&quot;
+     )
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Louvain method provides the right clustering (the same as the theoretical one). It is the most used in the world (for instance in LinkedIN …)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5lYjMgPSBjbHVzdGVyX2xlYWRpbmdfZWlnZW4oZ3JhcGgpXG5cblxuVihncmFwaCkkY29sb3I9ZWIzJG1lbWJlcnNoaXBcbnBsb3QoZ3JhcGgsIHZlcnRleC5sYWJlbCA9IE5BLCBsYXlvdXQgPSBsLCB2ZXJ0ZXguc2l6ZSA9IDUsIFxuICAgICBtYWluID0gXCJSZXByZXNlbnRzIDMgY29tbXVuaXRpZXMgdXNpbmcgU3BlY3RyYWwgQ2x1c3RlcmluZyBtZXRob2RcIlxuICAgICApXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+eb3 = cluster_leading_eigen(graph)
+
+
+V(graph)$color=eb3$membership
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = &quot;Represents 3 communities using Spectral Clustering method&quot;
+     )
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Spectral Clustering method provides also the perfect right answer. However it does not proceed the same way Louvain method does but it gets to the same result. This is a good method too.</p>
+<div id="section-7" class="section level4">
+<h4>15)</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIENoZWNrIHRoZSBtb2R1bGFyaXR5IGZvciBlYWNoIGFsZ29yaXRobSAoaW4gb2RlcikgSmFjYXJkLCBFZGdlIEJldHdlZW5lc3MsIExvdXZhaW4gYW5kIFNwZWN0cmFsIENsdXN0ZXJpbmdcbm1vZHVsYXJpdHkoZ3JhcGgsIGN1dHJlZShIQUMsIDMpKVxubW9kdWxhcml0eShlYilcbm1vZHVsYXJpdHkoZWIyKVxubW9kdWxhcml0eShlYjMpXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# Check the modularity for each algorithm (in oder) Jacard, Edge Betweeness, Louvain and Spectral Clustering
+modularity(graph, cutree(HAC, 3))
+modularity(eb)
+modularity(eb2)
+modularity(eb3)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The modularity evaluates how good the division of certains communities in a graph are good. The goal is to maximize the modularity. The higher the modularity, the better. To conclude we can see that the best ones are Louvain and Spectral Clustering as expected. The worst one is the Edge Betweeness methods.</p>
+<!-- rnb-text-end -->
+</div>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTXVsdGlkaW1lbnNpb25hbCBTdGF0aXN0aWNhbCBBbmFseXNpcyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6IGRlZmF1bHQKICBodG1sX25vdGVib29rOiBkZWZhdWx0CiAgcGRmX2RvY3VtZW50OiBkZWZhdWx0Ci0tLQoKTGFteWFhIEJPVVpCSUJBCkFsZXhhbmRyZSBQT1VQRUFVCkVsb2lzZSBKVUxJRU4KCiMjIDEgLSBJbXBvcnQgYW5kIFByZS1wcm9jZXNzaW5nCgojIyMgMSkKCmBgYHtyfQpOQW0yID0gcmVhZC50YWJsZSgiTkFtMi50eHQiLCBoZWFkZXIgPSBUUlVFKQoKIyBleHRyYWN0IHRoZSB0aHJlZSBwb3B1bGF0aW9uIG5lZWRlZCBmb3IgdGhlIHJlc3Qgb2YgdGhlIHdvcmsKY29tbXVuaXRpZXMgPC0gc3Vic2V0KE5BbTIsIFBvcCA9PSBjKCJDaGlwZXd5YW4iLCAiSHVpbGxpY2hlIiwgIlBpbWEiKSkKCiMgZXh0cmFjdCBhbGwgdGhlIGdlbmVzIGNvbHVtbiA5ID0+IC4uLgpnZW5lcyA8LSBkYXRhLmZyYW1lKGNvbW11bml0aWVzWywtKDE6OCldKQoKYGBgCgojIyMgMikKCmBgYHtyfQoKIyBjcmVhdGUgYSB0ZW1wb3JhcnkgbWF0cml4CnRtcE1hdCA8LSBkYXRhLm1hdHJpeChnZW5lcykKCiMgYWRqYWNlbmN5IAphZGphY2VuY3lNYXQgPSB0bXBNYXQlKiV0KHRtcE1hdCkKCiMgZXZlcnkgZGlhZ29uYWwgaXMgY29tcG9zZWQgb2YgdGhlIHN1bSBvZiBhbGwgdGhlIGdlbmV0aWMgbWFya2VycyAxIGZvciBlYWNoIHBlcnNvbgpkaWFnKGFkamFjZW5jeU1hdCkgPSAwCgpgYGAKCiMjIyAzKQoKYGBge3J9CgojIFBoYXNlIDEgOiByZXBsYWNlIHNvbWUgZWxlbWVudHMgdG8gMAojIHNldmVudGggZGVjaWxlIGlzIGVxdWFsIHRvCnNldmVudGggPC0gcXVhbnRpbGUoYWRqYWNlbmN5TWF0LCBwcm9iID0gMC43KQoKIyByZW1vdmUgdGhlIGVsZW1lbnQgaWYgaXRzIHZhbHVlIGlmIGluZmVyaW9yIHRvIHRoZSB0aHJlc2hvbGQgCmFkamFjZW5jeU1hdCA8LSBpZmVsc2UoYWRqYWNlbmN5TWF0PHNldmVudGgsIDAsIGFkamFjZW5jeU1hdCkKCiMgUGhhc2UgMiA6IHJlbW92ZSBzb21lIHJvd3MgLyBjb2x1bW5zCgojIHZlcnNpb24gMQojcm93c1RvRGVsZXRlIDwtIGMoRiwgMTpucm93KGFkamFjZW5jeU1hdCkpCiNyb3dzVG9EZWxldGUKI2ZvciAoaSBpbiAxOm5yb3coYWRqYWNlbmN5TWF0KSkgewojICByb3dfaSA8LSBhZGphY2VuY3lNYXRbaSwgXQojICBlbGVtZW50IDwtIHJvd19pW3Jvd19pICE9IDBdCiMgIGlmIChsZW5ndGgoZWxlbWVudCkgPiAxKSB7CiMgICAgcm93c1RvRGVsZXRlW2ldIDwtIFQKIyAgfQojfQoKIyByZW1vdmUgcm93cyBhbmQgY29sdW1ucyB2ZXJzaW9uIDIKYWRqX2JpbiA8LSBhZGphY2VuY3lNYXQKYWRqX2JpblthZGpfYmluID4gMF0gPSAxCmlkeCA8LSB3aGljaChjb2xTdW1zKGFkal9iaW4pIDw9IDEpCmFkamFjZW5jeU1hdCA9IGFkamFjZW5jeU1hdFstaWR4LCAtaWR4XQoKYGBgCgojIyAyKSBDaGFyYWN0ZXJpemF0aW9uIG9mIHRoZSBHcmFwaAoKIyMjIDQpCgpgYGB7cn0KCmxpYnJhcnkoImlncmFwaCIpCgpgYGAKCiMjIyA1KSAKCmBgYHtyfQoKIyAKYWRqYWNlbmN5TWF0MiA8LSBncmFwaC5hZGphY2VuY3koYWRqYWNlbmN5TWF0LCBtb2RlID0gInVuZGlyZWN0ZWQiLCB3ZWlnaHRlZCA9IFQpCgojCmwgPC0gbGF5b3V0LmZydWNodGVybWFuLnJlaW5nb2xkKChhZGphY2VuY3lNYXQyKSkKCnBsb3QoYWRqYWNlbmN5TWF0MiwgdmVydGV4LmxhYmVsID0gTkEsIGxheW91dCA9IGwsIHZlcnRleC5zaXplID0gNSkKCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTXVsdGlkaW1lbnNpb25hbCBTdGF0aXN0aWNhbCBBbmFseXNpcyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6IGRlZmF1bHQKICBodG1sX25vdGVib29rOiBkZWZhdWx0CiAgcGRmX2RvY3VtZW50OiBkZWZhdWx0Ci0tLQoKTGFteWFhIEJPVVpCSUJBCkFsZXhhbmRyZSBQT1VQRUFVCkVsb2lzZSBKVUxJRU4KCiMjIDEgLSBJbXBvcnQgYW5kIFByZS1wcm9jZXNzaW5nCgojIyMjIDEpCgpgYGB7cn0KTkFtMiA9IHJlYWQudGFibGUoIk5BbTIudHh0IiwgaGVhZGVyID0gVFJVRSkKCiMgZXh0cmFjdCB0aGUgdGhyZWUgcG9wdWxhdGlvbiBuZWVkZWQgZm9yIHRoZSByZXN0IG9mIHRoZSB3b3JrCmNvbW11bml0aWVzIDwtIHN1YnNldChOQW0yLCBQb3AgPT0gIkNoaXBld3lhbiIgfCBQb3AgPT0gIkh1aWxsaWNoZSIgfCBQb3AgPT0gIlBpbWEiKQoKIyBleHRyYWN0IGFsbCB0aGUgZ2VuZXMgY29sdW1uIDkgPT4gLi4uCmdlbmVzIDwtIGRhdGEuZnJhbWUoY29tbXVuaXRpZXNbLC0oMTo4KV0pCgpgYGAKCiMjIyMgMikKCmBgYHtyfQoKIyBjcmVhdGUgYSB0ZW1wb3JhcnkgbWF0cml4CnRtcE1hdCA8LSBkYXRhLm1hdHJpeChnZW5lcykKCiMgYWRqYWNlbmN5IAphZGphY2VuY3lNYXQgPSB0bXBNYXQlKiV0KHRtcE1hdCkKCiMgZXZlcnkgZGlhZ29uYWwgaXMgY29tcG9zZWQgb2YgdGhlIHN1bSBvZiBhbGwgdGhlIGdlbmV0aWMgbWFya2VycyAxIGZvciBlYWNoIHBlcnNvbgpkaWFnKGFkamFjZW5jeU1hdCkgPSAwCgpgYGAKCiMjIyMgMykKCmBgYHtyfQoKIyBQaGFzZSAxIDogcmVwbGFjZSBzb21lIGVsZW1lbnRzIHRvIDAKIyBzZXZlbnRoIGRlY2lsZSBpcyBlcXVhbCB0bwpzZXZlbnRoIDwtIHF1YW50aWxlKGFkamFjZW5jeU1hdCwgcHJvYiA9IDAuNykKCiMgcmVtb3ZlIHRoZSBlbGVtZW50IGlmIGl0cyB2YWx1ZSBpZiBpbmZlcmlvciB0byB0aGUgdGhyZXNob2xkIAphZGphY2VuY3lNYXRbYWRqYWNlbmN5TWF0PHNldmVudGhdID0gMAoKIyBQaGFzZSAyIDogcmVtb3ZlIHNvbWUgcm93cyAvIGNvbHVtbnMKCiMgdmVyc2lvbiAxCiNyb3dzVG9EZWxldGUgPC0gYyhGLCAxOm5yb3coYWRqYWNlbmN5TWF0KSkKI3Jvd3NUb0RlbGV0ZQojZm9yIChpIGluIDE6bnJvdyhhZGphY2VuY3lNYXQpKSB7CiMgIHJvd19pIDwtIGFkamFjZW5jeU1hdFtpLCBdCiMgIGVsZW1lbnQgPC0gcm93X2lbcm93X2kgIT0gMF0KIyAgaWYgKGxlbmd0aChlbGVtZW50KSA+IDEpIHsKIyAgICByb3dzVG9EZWxldGVbaV0gPC0gVAojICB9CiN9CgojIHJlbW92ZSByb3dzIGFuZCBjb2x1bW5zIHZlcnNpb24gMgphZGpfYmluIDwtIGFkamFjZW5jeU1hdAphZGpfYmluW2Fkal9iaW4gPiAwXSA9IDEKaWR4IDwtIHdoaWNoKGNvbFN1bXMoYWRqX2JpbikgPD0gMSkKYWRqYWNlbmN5TWF0ID0gYWRqYWNlbmN5TWF0Wy1pZHgsIC1pZHhdCgpgYGAKCiMjIDIpIENoYXJhY3Rlcml6YXRpb24gb2YgdGhlIEdyYXBoCgoKIyMjIyA0LDUgYW5kIDYpIAoKYGBge3J9CgojIHdlIGltcG9ydCB0aGUgbGlicmFieSB0byBoYW5kbGUgZ3JhcGhzCmxpYnJhcnkoImlncmFwaCIpCgojIGNyZWF0ZSB0aGUgZ3JhcGgKZ3JhcGggPC0gZ3JhcGguYWRqYWNlbmN5KGFkamFjZW5jeU1hdCwgbW9kZSA9ICJ1bmRpcmVjdGVkIiwgd2VpZ2h0ZWQgPSBUKQoKCiMgbGF5b3V0IHVzZWQgdG8gZGlzcGxheSB0aGUgZ3JhcGgKbCA8LSBsYXlvdXQuZnJ1Y2h0ZXJtYW4ucmVpbmdvbGQoKGdyYXBoKSkKCiMgZGlzcGxheSB0aGUgaW1hZ2UKcGxvdChncmFwaCwgdmVydGV4LmxhYmVsID0gTkEsIGxheW91dCA9IGwsIHZlcnRleC5zaXplID0gNSwgCiAgICAgbWFpbiA9ICJSZXByZXNlbnRzIHRoZSBjb25uZWN0aW9uIGJldHdlZW4gdGhyZWUgZ3JvdXBzIG9mIGNpdmlsaXNhdGlvbiIKICAgICApCgpgYGAKIyMjIyA3KQoKYGBge3J9CiMgRGlhbWV0ZXIgb2YgdGhlIGdyYXBoIHdpdGhvdXQgd2VpZ2h0ID0gTkEKZGlhbWV0ZXIoZ3JhcGgpCiMgQW5vdGhlciB3YXkgdG8gY2FsY3VsYXRlCm1heChzaG9ydGVzdC5wYXRocyhncmFwaCkpCiMgUmVhbCBkaWFtZXRlciB0aGF0IHdlIGV4cGVjdApkaWFtZXRlcihncmFwaCwgd2VpZ2h0ID0gTkEpCgojIG9yZGVyIHxWfCBhbmQgc2l6ZSB8RXwKc3VtbWFyeShncmFwaCkKCiMgdHdvIHdheXMgdG8gY2FsY3VsYXRlIHRoZSBhdmVyYWdlIGdlb2Rlc2ljIGRpc3RhbmNlCmF2ZXJhZ2UucGF0aC5sZW5ndGgoZ3JhcGgpCm1lYW5fZGlzdGFuY2UoZ3JhcGgpCgpgYGAKCkZpcnN0bHksIHdlIGhhdmUgdGhhdCB0aGUgZGlhbWV0ZXIgb2YgdGhlIGdyYXBoIGlzIDMuIFRoaXMgbWVhbnMgdGhhdCB0aGUgbG9uZ2VzdCBnZW9kZXNpYyBkaXN0YW5jZSBpcyBlcXVhbCB0byAzLiBUaGUgbG9uZ2VzdCBwYXRoIGZyb20gdGhlIHNob3J0ZXN0IHBhdGggaXMgMy4KClRoZSBvcmRlciBvZiB0aGUgZ3JhcGggaXMgdGhlIG51bWJlciBvZiB2ZXJ0aWNlcyB3aGljaCBpcyBlcXVhbCB0byA2Ny4KClRoZSBzaXplIG9mIHRoZSBncmFwaCBpcyB0aGUgbnVtYmVyIG9mIGVkZ2VzIHdoaWNoIGlzIGVxdWFsIHRvIDg0OC4KClRoZSBhdmVyYWdlIGdlb2Rlc2ljIGRpc3RhbmNlIG9mIHRoZSBncmFwaCBpcyAxLjcwNDY1OS4KCiMjIDMpIENvbW11bml0eSBEZXRlY3Rpb24KCiMjIyAzLjEpIEhpZXJhcmNoaWNhbCBBc2NlbmRhbnQgQ2x1c3RlcmluZwoKIyMjIyA4KSAKCmBgYHtyfQoKIyBjcmVhdGUgdGhlIEphY2FyZCBtYXRyaXggCmphY2FyZE1hdCA9IHNpbWlsYXJpdHkoZ3JhcGgpCgojIGNyZWF0ZSB0aGUgSEFDCkhBQyA9IGhjbHVzdChkaXN0KGphY2FyZE1hdCkpCgojIGRpc3BsYXkgdGhlIGRlbmRyb2dyYW0KcGxvdChIQUMpCgpgYGAKCmBgYHtyfQoKIyBhbGdvcml0aG0gdGhhdCBzaG93cyBmb3Igd2hpY2ggdGhlIG51bWJlciBvZiBjb21tdW5pdHkgZml0cyBiZXN0IHRoZSBncmFwaAptb2QgPSBjKCkKZm9yIChpIGluIDE6MTApIHsKICBsYWIgPSBjdXRyZWUoSEFDLCBpKQogIG1vZFtpXSA9IG1vZHVsYXJpdHkoZ3JhcGgsIGxhYikKfQpwbG90KG1vZCwgdHlwZSA9ICJsIikKCmBgYAoKYGBge3J9CgojIGRpc3BsYXkgdGhlIGltYWdlIGZvciAKbGFiID0gY3V0cmVlKEhBQywgMykKVihncmFwaCkkY29sb3IgPSBsYWIKIyBkaXNwbGF5IHRoZSBpbWFnZQpwbG90KGdyYXBoLCB2ZXJ0ZXgubGFiZWwgPSBOQSwgbGF5b3V0ID0gbCwgdmVydGV4LnNpemUgPSA1LCAKICAgICBtYWluID0gIlJlcHJlc2VudHMgMyBjb21tdW5pdGllcyB1c2luZyBKYWNhcmQiCiAgICAgKQoKYGBgCgpKYWNhcmQgY2x1c3RlcmluZyBtZXRob2QgcHJvdmlkZXMgYSBnb29kIGRpdmlzaW9uIG9mIHRoZSBjb21tdW5pdGllcy4gQWxtb3N0IGFzIGdvb2QgYXMgdGhlIHRoZW9yZXRpY2FsIG9uZS4gVGhlcmUgYXJlIGZldyBlcnJvcnMgYmV0d2VlbiB0aGUgYmx1ZSBhbmQgdGhlIGdyZWVuIGNvbW11bml0aWVzLiAKCiMjIyAzLjIpIEVkZ2UtQmV0d2VlbmVzcwoKIyMjIyAxMikKCmBgYHtyfQoKIyB3ZSBub3cgd2FudCB0byBmb3JtIGNsdXN0ZXIgdXNpbmcgdGhlIGVkZ2UtYmV0d2VlbmVzcyBtZXRob2QKZWIgPSBjbHVzdGVyX2VkZ2VfYmV0d2Vlbm5lc3MoZ3JhcGgpCiMgcGxvdChhcy5kZW5kcm9ncmFtKGViKSkKCmBgYAoKIyMjIyAxMykgCmBgYHtyfQoKbW9kcyA9IHNhcHBseSgwOmVjb3VudChncmFwaCksIGZ1bmN0aW9uKGkpewogIGcyID0gZGVsZXRlLmVkZ2VzKGdyYXBoLCBlYiRyZW1vdmVkLmVkZ2VzW3NlcShsZW5ndGg9aSldKQogIGNsID0gY2x1c3RlcnMoZzIpJG1lbWJlcnNoaXAKICBtb2R1bGFyaXR5KGdyYXBoLGNsKQogIH0pCmcyPC1kZWxldGUuZWRnZXMoZ3JhcGgsIGViJHJlbW92ZWQuZWRnZXNbc2VxKGxlbmd0aD13aGljaC5tYXgobW9kcyktMSldKQoKVihncmFwaCkkY29sb3I9Y2x1c3RlcnMoZzIpJG1lbWJlcnNoaXAKcGxvdChncmFwaCwgdmVydGV4LmxhYmVsID0gTkEsIGxheW91dCA9IGwsIHZlcnRleC5zaXplID0gNSwgCiAgICAgbWFpbiA9ICJSZXByZXNlbnRzIDMgY29tbXVuaXRpZXMgdXNpbmcgRWRnZSBCZXR3ZWVuZXNzIG1ldGhvZCIKICAgICApCgoKYGBgCgpFZGdlIEJldHdlZW5lZXMgbWV0aG9kIHByb3ZpZGVzIGEgcmVhbGx5IGJhZCBjbHVzdGVyaW5nLiBJdCBpcyBtYWlubHkgYmVjYXVzZSBpdCBpcyByZWFsbHkgc2Vuc2libGUgdG8gZXh0cmVtZSB2ZXJ0aWNlcyAobm9kZXMpLiBUaGlzIGlzIHdoeSBpdCBmb3VuZHMgbm90IHRocmVlIGJ1dCBmb3VyIGNvbW11bml0aWVzIGJ1dCB0d28gaGF2ZSBvbmx5IG9uZSBwZXJzb24gd2hpY2ggY2Fubm90IGJlIGNvcnJlY3QuCgojIyMgMy4zKSBTcGVjdHJhbCBDbHVzdGVyaW5nIGFuZCBMb3V2YWluCgpgYGB7cn0KCgplYjIgPSBjbHVzdGVyX2xvdXZhaW4oZ3JhcGgpCgpWKGdyYXBoKSRjb2xvcj1lYjIkbWVtYmVyc2hpcApwbG90KGdyYXBoLCB2ZXJ0ZXgubGFiZWwgPSBOQSwgbGF5b3V0ID0gbCwgdmVydGV4LnNpemUgPSA1LCAKICAgICBtYWluID0gIlJlcHJlc2VudHMgMyBjb21tdW5pdGllcyB1c2luZyBMb3V2YWluIG1ldGhvZCIKICAgICApCgoKYGBgCgpMb3V2YWluIG1ldGhvZCBwcm92aWRlcyB0aGUgcmlnaHQgY2x1c3RlcmluZyAodGhlIHNhbWUgYXMgdGhlIHRoZW9yZXRpY2FsIG9uZSkuIEl0IGlzIHRoZSBtb3N0IHVzZWQgaW4gdGhlIHdvcmxkIChmb3IgaW5zdGFuY2UgaW4gTGlua2VkSU4gLi4uKQoKYGBge3J9CgplYjMgPSBjbHVzdGVyX2xlYWRpbmdfZWlnZW4oZ3JhcGgpCgoKVihncmFwaCkkY29sb3I9ZWIzJG1lbWJlcnNoaXAKcGxvdChncmFwaCwgdmVydGV4LmxhYmVsID0gTkEsIGxheW91dCA9IGwsIHZlcnRleC5zaXplID0gNSwgCiAgICAgbWFpbiA9ICJSZXByZXNlbnRzIDMgY29tbXVuaXRpZXMgdXNpbmcgU3BlY3RyYWwgQ2x1c3RlcmluZyBtZXRob2QiCiAgICAgKQoKYGBgCgpTcGVjdHJhbCBDbHVzdGVyaW5nIG1ldGhvZCBwcm92aWRlcyBhbHNvIHRoZSBwZXJmZWN0IHJpZ2h0IGFuc3dlci4gSG93ZXZlciBpdCBkb2VzIG5vdCBwcm9jZWVkIHRoZSBzYW1lIHdheSBMb3V2YWluIG1ldGhvZCBkb2VzIGJ1dCBpdCBnZXRzIHRvIHRoZSBzYW1lIHJlc3VsdC4gVGhpcyBpcyBhIGdvb2QgbWV0aG9kIHRvby4KCiMjIyMgMTUpCgpgYGB7cn0KCiMgQ2hlY2sgdGhlIG1vZHVsYXJpdHkgZm9yIGVhY2ggYWxnb3JpdGhtIChpbiBvZGVyKSBKYWNhcmQsIEVkZ2UgQmV0d2VlbmVzcywgTG91dmFpbiBhbmQgU3BlY3RyYWwgQ2x1c3RlcmluZwptb2R1bGFyaXR5KGdyYXBoLCBjdXRyZWUoSEFDLCAzKSkKbW9kdWxhcml0eShlYikKbW9kdWxhcml0eShlYjIpCm1vZHVsYXJpdHkoZWIzKQoKYGBgCgpUaGUgbW9kdWxhcml0eSBldmFsdWF0ZXMgaG93IGdvb2QgdGhlIGRpdmlzaW9uIG9mIGNlcnRhaW5zIGNvbW11bml0aWVzIGluIGEgZ3JhcGggYXJlIGdvb2QuIFRoZSBnb2FsIGlzIHRvIG1heGltaXplIHRoZSBtb2R1bGFyaXR5LiBUaGUgaGlnaGVyIHRoZSBtb2R1bGFyaXR5LCB0aGUgYmV0dGVyLiAKVG8gY29uY2x1ZGUgd2UgY2FuIHNlZSB0aGF0IHRoZSBiZXN0IG9uZXMgYXJlIExvdXZhaW4gYW5kIFNwZWN0cmFsIENsdXN0ZXJpbmcgYXMgZXhwZWN0ZWQuIFRoZSB3b3JzdCBvbmUgaXMgdGhlIEVkZ2UgQmV0d2VlbmVzcyBtZXRob2RzLgo=</div>
 
 
 

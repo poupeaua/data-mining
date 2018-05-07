@@ -12,20 +12,20 @@ Eloise JULIEN
 
 ## 1 - Import and Pre-processing
 
-### 1)
+#### 1)
 
 ```{r}
 NAm2 = read.table("NAm2.txt", header = TRUE)
 
 # extract the three population needed for the rest of the work
-communities <- subset(NAm2, Pop == c("Chipewyan", "Huilliche", "Pima"))
+communities <- subset(NAm2, Pop == "Chipewyan" | Pop == "Huilliche" | Pop == "Pima")
 
 # extract all the genes column 9 => ...
 genes <- data.frame(communities[,-(1:8)])
 
 ```
 
-### 2)
+#### 2)
 
 ```{r}
 
@@ -40,7 +40,7 @@ diag(adjacencyMat) = 0
 
 ```
 
-### 3)
+#### 3)
 
 ```{r}
 
@@ -49,7 +49,7 @@ diag(adjacencyMat) = 0
 seventh <- quantile(adjacencyMat, prob = 0.7)
 
 # remove the element if its value if inferior to the threshold 
-adjacencyMat <- ifelse(adjacencyMat<seventh, 0, adjacencyMat)
+adjacencyMat[adjacencyMat<seventh] = 0
 
 # Phase 2 : remove some rows / columns
 
@@ -74,25 +74,173 @@ adjacencyMat = adjacencyMat[-idx, -idx]
 
 ## 2) Characterization of the Graph
 
-### 4)
+
+#### 4,5 and 6) 
 
 ```{r}
 
+# we import the libraby to handle graphs
 library("igraph")
 
+# create the graph
+graph <- graph.adjacency(adjacencyMat, mode = "undirected", weighted = T)
+
+
+# layout used to display the graph
+l <- layout.fruchterman.reingold((graph))
+
+# display the image
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = "Represents the connection between three groups of civilisation"
+     )
+
+```
+#### 7)
+
+```{r}
+# Diameter of the graph without weight = NA
+diameter(graph)
+# Another way to calculate
+max(shortest.paths(graph))
+# Real diameter that we expect
+diameter(graph, weight = NA)
+
+# order |V| and size |E|
+summary(graph)
+
+# two ways to calculate the average geodesic distance
+average.path.length(graph)
+mean_distance(graph)
+
 ```
 
-### 5) 
+Firstly, we have that the diameter of the graph is 3. This means that the longest geodesic distance is equal to 3. The longest path from the shortest path is 3.
+
+The order of the graph is the number of vertices which is equal to 67.
+
+The size of the graph is the number of edges which is equal to 848.
+
+The average geodesic distance of the graph is 1.704659.
+
+## 3) Community Detection
+
+### 3.1) Hierarchical Ascendant Clustering
+
+#### 8) 
 
 ```{r}
 
-# 
-adjacencyMat2 <- graph.adjacency(adjacencyMat, mode = "undirected", weighted = T)
+# create the Jacard matrix 
+jacardMat = similarity(graph)
 
-#
-l <- layout.fruchterman.reingold((adjacencyMat2))
+# create the HAC
+HAC = hclust(dist(jacardMat))
 
-plot(adjacencyMat2, vertex.label = NA, layout = l, vertex.size = 5)
+# display the dendrogram
+plot(HAC)
 
 ```
 
+```{r}
+
+# algorithm that shows for which the number of community fits best the graph
+mod = c()
+for (i in 1:10) {
+  lab = cutree(HAC, i)
+  mod[i] = modularity(graph, lab)
+}
+plot(mod, type = "l")
+
+```
+
+```{r}
+
+# display the image for 
+lab = cutree(HAC, 3)
+V(graph)$color = lab
+# display the image
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = "Represents 3 communities using Jacard"
+     )
+
+```
+
+Jacard clustering method provides a good division of the communities. Almost as good as the theoretical one. There are few errors between the blue and the green communities. 
+
+### 3.2) Edge-Betweeness
+
+#### 12)
+
+```{r}
+
+# we now want to form cluster using the edge-betweeness method
+eb = cluster_edge_betweenness(graph)
+# plot(as.dendrogram(eb))
+
+```
+
+#### 13) 
+```{r}
+
+mods = sapply(0:ecount(graph), function(i){
+  g2 = delete.edges(graph, eb$removed.edges[seq(length=i)])
+  cl = clusters(g2)$membership
+  modularity(graph,cl)
+  })
+g2<-delete.edges(graph, eb$removed.edges[seq(length=which.max(mods)-1)])
+
+V(graph)$color=clusters(g2)$membership
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = "Represents 3 communities using Edge Betweeness method"
+     )
+
+
+```
+
+Edge Betweenees method provides a really bad clustering. It is mainly because it is really sensible to extreme vertices (nodes). This is why it founds not three but four communities but two have only one person which cannot be correct.
+
+### 3.3) Spectral Clustering and Louvain
+
+```{r}
+
+
+eb2 = cluster_louvain(graph)
+
+V(graph)$color=eb2$membership
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = "Represents 3 communities using Louvain method"
+     )
+
+
+```
+
+Louvain method provides the right clustering (the same as the theoretical one). It is the most used in the world (for instance in LinkedIN ...)
+
+```{r}
+
+eb3 = cluster_leading_eigen(graph)
+
+
+V(graph)$color=eb3$membership
+plot(graph, vertex.label = NA, layout = l, vertex.size = 5, 
+     main = "Represents 3 communities using Spectral Clustering method"
+     )
+
+```
+
+Spectral Clustering method provides also the perfect right answer. However it does not proceed the same way Louvain method does but it gets to the same result. This is a good method too.
+
+#### 15)
+
+```{r}
+
+# Check the modularity for each algorithm (in oder) Jacard, Edge Betweeness, Louvain and Spectral Clustering
+modularity(graph, cutree(HAC, 3))
+modularity(eb)
+modularity(eb2)
+modularity(eb3)
+
+```
+
+The modularity evaluates how good the division of certains communities in a graph are good. The goal is to maximize the modularity. The higher the modularity, the better. 
+To conclude we can see that the best ones are Louvain and Spectral Clustering as expected. The worst one is the Edge Betweeness methods.
