@@ -4,7 +4,7 @@ This project gathers five projects done in ENSIMAG using Rstudio, thus R.
 
 ## TP1 -  Basic data mining & cofounding factors
 
-Gaussian generation
+Gaussian noise generation
 
 ## TP2 - Data Mining on Genetic Data
 
