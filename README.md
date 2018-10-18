@@ -1,4 +1,4 @@
-# statistical_mining
+# Data mining
 
 This project gathers five projects done in ENSIMAG using Rstudio, thus R.
 
